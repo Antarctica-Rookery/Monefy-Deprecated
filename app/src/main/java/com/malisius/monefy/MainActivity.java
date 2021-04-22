@@ -2,16 +2,27 @@ package com.malisius.monefy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private TextInputLayout TILusername, TILpassword;
+    private ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         TILusername = findViewById(R.id.tf_username);
         TILpassword = findViewById(R.id.tf_password);
+        constraintLayout = findViewById(R.id.main_constraint);
     }
 
     public void signUp(View view){
@@ -44,46 +57,113 @@ public class MainActivity extends AppCompatActivity {
         String username = TILusername.getEditText().getText().toString();
         String password = TILpassword.getEditText().getText().toString();
         Log.i("MainActivity", username);
-        if(username.isEmpty()){
+        if(username.isEmpty()) {
             TILusername.setError("Username is Empty");
         } else {
-            mDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference mUserReference = mDatabase.getReference().child("Users");
-            ValueEventListener eventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot userDataSnapshot : dataSnapshot.getChildren()) {
-                        if (username.equals(userDataSnapshot.child("username").getValue().toString())) {
-                            Log.i("MainActivity",userDataSnapshot.child("email").getValue().toString());
-                            if(password.isEmpty()){
-                                TILpassword.setError("Password must not empty");
-                            } else {
-                                Query mUserReference = mDatabase.getReference().child("Users");
-                                ValueEventListener eventListener = new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        Log.i("MainActivity",snapshot.toString());
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        Log.i("MainActivity",error.toString());
-                                    }
-                                };
-                                mUserReference.addListenerForSingleValueEvent(eventListener);
+            if(!Patterns.EMAIL_ADDRESS.matcher(username).matches()){
+                mDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference mUserReference = mDatabase.getReference().child("Users");
+                ValueEventListener eventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        boolean foundUser = false;
+                        for (DataSnapshot userDataSnapshot : dataSnapshot.getChildren()) {
+                            if (username.equals(userDataSnapshot.child("username").getValue().toString())) {
+                                foundUser = true;
+                                Log.i("MainActivity",userDataSnapshot.child("email").getValue().toString());
+                                if(password.isEmpty()){
+                                    TILpassword.setError("Password must not empty");
+                                } else {
+                                    String email = userDataSnapshot.child("email").getValue().toString();
+                                    mAuth.signInWithEmailAndPassword(email, password)
+                                            .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    if (task.isSuccessful()) {
+                                                        // Sign in success, update UI with the signed-in user's information
+                                                        Log.d("MainActivity", "signInWithEmail:success");
+                                                        FirebaseUser user = mAuth.getCurrentUser();
+                                                        Bundle userBundle = new Bundle();
+                                                        userBundle.putString("username", username);
+                                                        userBundle.putString("uid", user.getUid());
+                                                        Snackbar.make(constraintLayout,"Login Sucessful",Snackbar.LENGTH_SHORT).show();
+                                                        Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                                                        homeIntent.putExtra("USER_DATA", userBundle);
+                                                        startActivity(homeIntent);
+                                                    } else {
+                                                        // If sign in fails, display a message to the user.
+                                                        Log.w("MainActivity",  task.getException());
+                                                        if(task.getException() instanceof FirebaseAuthInvalidCredentialsException){
+                                                            TILpassword.setError("Invalid Password");
+                                                        }
+                                                        else if (task.getException() instanceof FirebaseTooManyRequestsException) {
+                                                            Snackbar.make(constraintLayout,"Too Many Request",Snackbar.LENGTH_SHORT)
+                                                                    .setBackgroundTint(ResourcesCompat.getColor(getResources(), R.color.red, null))
+                                                                    .setTextColor(ResourcesCompat.getColor(getResources(), R.color.white, null))
+                                                                    .show();
+                                                        } else {
+                                                            Snackbar.make(constraintLayout,"Unkown Error",Snackbar.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                }
                             }
-                        } else {
-                            Log.i("MainActivity","userID null");
+                        }
+                        if(foundUser == false){
+                            TILusername.setError("User Not Found");
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
+                    }
+                };
+                mUserReference.addListenerForSingleValueEvent(eventListener);
+            }
+            else {
+                if(password.isEmpty()){
+                    TILpassword.setError("Password must not empty");
+                } else {
+                    mAuth.signInWithEmailAndPassword(username, password)
+                            .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d("MainActivity", "signInWithEmail:success");
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        Bundle userBundle = new Bundle();
+                                        userBundle.putString("username", username);
+                                        userBundle.putString("uid", user.getUid());
+                                        Snackbar.make(constraintLayout,"Login Successful",Snackbar.LENGTH_SHORT).show();
+                                        Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                                        homeIntent.putExtra("USER_DATA", userBundle);
+                                        startActivity(homeIntent);
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w("MainActivity",  task.getException());
+                                        if(task.getException() instanceof FirebaseAuthInvalidCredentialsException){
+                                            TILpassword.setError("Invalid Email or Password");
+                                            TILusername.setError("Invalid Email or Password");
+                                        }
+                                        else if(task.getException() instanceof FirebaseAuthInvalidUserException){
+                                            TILusername.setError("No User with this Email Found");
+                                        }
+                                        else if (task.getException() instanceof FirebaseTooManyRequestsException) {
+                                            Snackbar.make(constraintLayout,"Too Many Request",Snackbar.LENGTH_SHORT)
+                                                    .setBackgroundTint(ResourcesCompat.getColor(getResources(), R.color.red, null))
+                                                    .setTextColor(ResourcesCompat.getColor(getResources(), R.color.white, null))
+                                                    .show();
+                                        } else {
+                                            Snackbar.make(constraintLayout,"Unknown Error",Snackbar.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            });
                 }
-            };
-            mUserReference.addListenerForSingleValueEvent(eventListener);
+            }
         }
 
     }
