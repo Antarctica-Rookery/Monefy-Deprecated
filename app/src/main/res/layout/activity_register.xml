@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".RegisterActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/landing_img"
@@ -75,6 +75,7 @@
             android:hint="Username"
             app:startIconDrawable="@drawable/ic_baseline_account_circle_24"
             app:boxStrokeWidth="2dp"
+            app:errorEnabled="true"
             app:boxStrokeColor="@color/input_text_border"
             app:shapeAppearance="@style/ShapeAppearance.InputTextComponent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -82,6 +83,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -90,6 +92,7 @@
             android:layout_marginHorizontal="30dp"
             android:id="@+id/signup_email"
             android:layout_width="match_parent"
+            app:errorEnabled="true"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="Email"
@@ -102,7 +105,8 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,17 +116,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            app:errorEnabled="true"
             android:hint="Password"
             app:boxStrokeWidth="2dp"
             app:startIconDrawable="@drawable/ic_baseline_vpn_key_24"
             app:boxStrokeColor="@color/input_text_border"
             android:elevation="8dp"
             app:shapeAppearance="@style/ShapeAppearance.InputTextComponent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -147,7 +154,7 @@
         app:elevation="10dp"
         android:textSize="20dp"
         android:elevation="16dp"
-        android:onClick="openHomeActivity"
+        android:onClick="signUp"
         />
 
     <LinearLayout

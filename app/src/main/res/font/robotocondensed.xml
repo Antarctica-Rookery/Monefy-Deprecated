@@ -23,6 +23,6 @@
     <font
         android:fontStyle="italic"
         android:fontWeight="700"
-        android:font="@font/robotocondensed_boldItalic" />
+        android:font="@font/robotocondensed_bold_italic" />
 
 </font-family>
