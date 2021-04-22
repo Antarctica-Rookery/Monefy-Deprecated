@@ -10,12 +10,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,10 +32,10 @@ import java.util.regex.Pattern;
 
 public class RegisterActivity  extends AppCompatActivity {
     private String username, email, password;
-    TextInputLayout TILusername, TILemail, TILpassword;
+    private TextInputLayout TILusername, TILemail, TILpassword;
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
-    Button btnSignUp;
+    private ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class RegisterActivity  extends AppCompatActivity {
         TILusername = findViewById(R.id.signup_username);
         TILemail = findViewById(R.id.signup_email);
         TILpassword = findViewById(R.id.signup_password);
-        btnSignUp = findViewById(R.id.signup_Button);
+        constraintLayout = findViewById(R.id.register_Constraint);
     }
 
     public void openLoginActivity(View view){
@@ -68,20 +71,23 @@ public class RegisterActivity  extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             User user_username = new User(username, user.getEmail());
                             mDatabase.getReference("Users").child(mAuth.getUid()).setValue(user_username);
-                            Toast.makeText(RegisterActivity.this, "User Created",
-                                    Toast.LENGTH_SHORT).show();
                             Bundle userBundle = new Bundle();
                             userBundle.putString("username", username);
                             userBundle.putString("uid", user.getUid());
+                            Snackbar.make(constraintLayout,"User Created",Snackbar.LENGTH_SHORT).show();
                             Intent homeIntent = new Intent(RegisterActivity.this, HomeActivity.class);
                             homeIntent.putExtra("USER_DATA", userBundle);
                             startActivity(homeIntent);
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("RegisterActivity", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Log.w("RegisterActivity", task.getException().getMessage());
+
+                            if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                TILemail.setError(task.getException().getMessage());
+                            } else {
+                                Snackbar.make(constraintLayout,"Unknown Error",Snackbar.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
