@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".RegisterActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/landing_img"
@@ -147,7 +147,7 @@
         app:elevation="10dp"
         android:textSize="20dp"
         android:elevation="16dp"
-        android:onClick="openHomeActivity"
+        android:onClick="signUp"
         />
 
     <LinearLayout
