@@ -18,9 +18,8 @@
         <View
             android:id="@+id/view"
             android:layout_width="5dp"
-            android:layout_height="25dp"
+            android:layout_height="36dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:background="@color/blue" />
 
@@ -33,7 +32,24 @@
             android:fontFamily="@font/robotocondensed_regular"
             android:text="Category name"
             android:textColor="#000000"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/redhattext"
+            android:gravity="center"
+            android:text="Rp. 1.000.000"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_baseline_arrow_forward_ios_24" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
