@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/home"/>
+    <item
+        android:id="@+id/income"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_attach_money_24"
+        android:title="@string/income"/>
+    <item
+        android:id="@+id/expense"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_money_off_24"
+        android:title="@string/expense"/>
+    <item
+        android:id="@+id/budget"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_checklist_24"
+        android:title="@string/budget"/>
+    <item
+        android:id="@+id/settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/settings"/>
+</menu>
