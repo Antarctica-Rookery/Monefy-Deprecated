@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         TILusername = findViewById(R.id.tf_username);
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             if(!Patterns.EMAIL_ADDRESS.matcher(username).matches()){
                 mDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference mUserReference = mDatabase.getReference().child("Users");
+                mUserReference.keepSynced(true);
                 ValueEventListener eventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

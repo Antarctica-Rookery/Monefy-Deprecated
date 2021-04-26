@@ -99,11 +99,13 @@
             app:boxStrokeColor="@color/input_text_border"
             android:elevation="8dp"
             app:shapeAppearance="@style/ShapeAppearance.InputTextComponent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textPassword"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
