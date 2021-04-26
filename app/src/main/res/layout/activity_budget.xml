@@ -98,7 +98,7 @@
                         android:fontFamily="@font/robotocondensed_bold"
                         android:text="Rp 300.000"
                         android:textColor="@color/black"
-                        android:textSize="24sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/textView17"
@@ -108,7 +108,7 @@
                         android:layout_marginRight="8dp"
                         android:fontFamily="@font/robotocondensed"
                         android:text="/"
-                        android:textSize="24sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/budget_total"
@@ -116,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/robotocondensed_bold"
                         android:text="Rp. 1.200.000"
-                        android:textSize="24sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
             </LinearLayout>
