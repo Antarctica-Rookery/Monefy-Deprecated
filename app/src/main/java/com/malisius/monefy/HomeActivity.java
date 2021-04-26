@@ -26,6 +26,15 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.settings:
                         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                         return true;
+                    case R.id.income:
+                        startActivity(new Intent(getApplicationContext(), IncomeActivity.class));
+                        return true;
+                    case R.id.expense:
+                        startActivity(new Intent(getApplicationContext(), ExpenseActivity.class));
+                        return true;
+                    case R.id.budget:
+                        startActivity(new Intent(getApplicationContext(), BudgetActivity.class));
+                        return true;
                 }
                 return false;
             }
