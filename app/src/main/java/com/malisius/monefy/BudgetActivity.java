@@ -26,15 +26,19 @@ public class BudgetActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.settings:
                         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.income:
                         startActivity(new Intent(getApplicationContext(), IncomeActivity.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.expense:
                         startActivity(new Intent(getApplicationContext(), ExpenseActivity.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.home:
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;
