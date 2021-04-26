@@ -23,6 +23,7 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        //go to about us
         final LinearLayout aboutUs = root.findViewById(R.id.aboutus);
         aboutUs.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,6 +33,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        //go to categories
         final LinearLayout categories = root.findViewById(R.id.categories);
         categories.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +43,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        //go to main activity
         final LinearLayout logout = root.findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
