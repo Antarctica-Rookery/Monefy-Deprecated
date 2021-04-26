@@ -98,7 +98,7 @@
                         android:fontFamily="@font/robotocondensed_bold"
                         android:text="Rp 300.000"
                         android:textColor="@color/black"
-                        android:textSize="24sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/textView17"
@@ -108,7 +108,7 @@
                         android:layout_marginRight="8dp"
                         android:fontFamily="@font/robotocondensed"
                         android:text="/"
-                        android:textSize="24sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/budget_total"
@@ -116,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/robotocondensed_bold"
                         android:text="Rp. 1.200.000"
-                        android:textSize="24sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -141,7 +141,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,12 +154,12 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
+        android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
