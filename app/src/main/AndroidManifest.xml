@@ -11,7 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Monefy">
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".BudgetActivity"></activity>
+        <activity android:name=".ExpenseActivity" />
+        <activity android:name=".IncomeActivity" />
+        <activity android:name=".SettingsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
