@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/back"
             android:layout_width="24dp"
             android:layout_height="24dp"
             app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
@@ -113,7 +113,7 @@
                         android:id="@+id/textView4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="FullName"
+                        android:text="@string/author1"
                         android:textSize="18sp" />
 
                     <TextView
@@ -164,7 +164,7 @@
                         android:id="@+id/textView6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="FullName"
+                        android:text="@string/author2"
                         android:textSize="18sp" />
 
                     <TextView
@@ -215,7 +215,7 @@
                         android:id="@+id/textView8"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="FullName"
+                        android:text="@string/author3"
                         android:textSize="18sp" />
 
                     <TextView
@@ -266,7 +266,7 @@
                         android:id="@+id/textView10"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="FullName"
+                        android:text="@string/author4"
                         android:textSize="18sp" />
 
                     <TextView
@@ -318,7 +318,7 @@
                         android:id="@+id/textView12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="FullName"
+                        android:text="@string/author5"
                         android:textSize="18sp" />
 
                     <TextView
