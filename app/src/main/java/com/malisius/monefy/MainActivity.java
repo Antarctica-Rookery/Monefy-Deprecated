@@ -37,6 +37,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.malisius.monefy.category.Category;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
         TILusername = findViewById(R.id.tf_username);
         TILpassword = findViewById(R.id.tf_password);
         constraintLayout = findViewById(R.id.main_constraint);
@@ -105,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             TILusername.setError("Username is Empty");
         } else {
             if(!Patterns.EMAIL_ADDRESS.matcher(username).matches()){
-                mDatabase = FirebaseDatabase.getInstance();
+
                 DatabaseReference mUserReference = mDatabase.getReference().child("Users");
                 ValueEventListener eventListener = new ValueEventListener() {
                     @Override
@@ -225,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed
+                Log.w("GoogleSignIn", e.getMessage());
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
@@ -239,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success
                             FirebaseUser user = mAuth.getCurrentUser();
+                            initiateCategory();
                             Intent iWannaGoHome = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(iWannaGoHome);
                         } else {
@@ -249,4 +255,17 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    private void initiateCategory() {
+        DatabaseReference userDataRef = mDatabase.getReference().child(mAuth.getCurrentUser().getUid());
+        ArrayList<Category> categoriesName = new ArrayList<Category>();
+        categoriesName.add(new Category("Food",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+        categoriesName.add(new Category("Shopping",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+        categoriesName.add(new Category("Housing",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+        categoriesName.add(new Category("Transportation",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+        categoriesName.add(new Category("Financial",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+        for(Category category : categoriesName){
+            String categoryKey = userDataRef.push().getKey();
+            userDataRef.child(categoryKey).setValue(category);
+        }
+    }
 }
