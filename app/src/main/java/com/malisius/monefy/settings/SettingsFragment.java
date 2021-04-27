@@ -16,6 +16,7 @@ import com.malisius.monefy.about_us.AboutUsActivity;
 import com.malisius.monefy.category.CategoryActivity;
 
 public class SettingsFragment extends Fragment {
+    LinearLayout aboutUs, categories, logout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -24,7 +25,7 @@ public class SettingsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
         //go to about us
-        final LinearLayout aboutUs = root.findViewById(R.id.aboutus);
+        aboutUs = root.findViewById(R.id.aboutus);
         aboutUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,7 +35,7 @@ public class SettingsFragment extends Fragment {
         });
 
         //go to categories
-        final LinearLayout categories = root.findViewById(R.id.categories);
+        categories = root.findViewById(R.id.categories);
         categories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +45,7 @@ public class SettingsFragment extends Fragment {
         });
 
         //go to main activity
-        final LinearLayout logout = root.findViewById(R.id.logout);
+        logout = root.findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
