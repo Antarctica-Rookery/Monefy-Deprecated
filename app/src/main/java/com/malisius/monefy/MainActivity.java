@@ -49,6 +49,16 @@ public class MainActivity extends AppCompatActivity {
     private static int RC_SIGN_IN = 69;
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user != null){
+            Intent iWannaGoHome = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(iWannaGoHome);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -227,13 +237,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                               FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            // Sign in success
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Intent iWannaGoHome = new Intent(getApplicationContext(), HomeActivity.class);
+                            startActivity(iWannaGoHome);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            updateUI(null);
-                        }
+                            // Sign in failed
+                            Toast.makeText(MainActivity.this, "Authorization Failed", Toast.LENGTH_SHORT).show();
+                       }
                     }
                 });
     }
