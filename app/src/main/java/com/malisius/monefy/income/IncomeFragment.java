@@ -1,0 +1,40 @@
+package com.malisius.monefy.income;
+
+import android.graphics.Color;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.malisius.monefy.R;
+
+import java.util.ArrayList;
+
+import app.futured.donut.DonutProgressView;
+import app.futured.donut.DonutSection;
+
+public class IncomeFragment extends Fragment {
+    private DonutProgressView donutProgressView;
+    private ArrayList<DonutSection> sections = new ArrayList<>();
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View root = inflater.inflate(R.layout.fragment_income, container, false);
+
+        //using donut progress
+        donutProgressView = root.findViewById(R.id.donut_view);
+
+        sections.add(new DonutSection("Category 1", Color.parseColor("#64b5f6"), 1.9f));
+        sections.add(new DonutSection("Category 2", Color.parseColor("#2196f3"), 0.5f));
+        sections.add(new DonutSection("Category 3", Color.parseColor("#1976d2"), 0.3f));
+        donutProgressView.setCap(3.0f);
+        donutProgressView.submitData(sections);
+
+        return root;
+    }
+}
