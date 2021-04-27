@@ -41,10 +41,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
         // Set item views based on your views and data model
         TextView textView = holder.categoryName;
-        textView.setText(category.getCategoryName());
+        textView.setText(category.getName());
 
         View view_color = holder.categoryColor;
-        view_color.setBackgroundColor(category.getCategoryColor());
+        view_color.setBackgroundColor(category.getColor());
     }
 
     @Override

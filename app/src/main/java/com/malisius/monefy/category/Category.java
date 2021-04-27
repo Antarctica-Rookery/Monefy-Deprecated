@@ -2,23 +2,55 @@ package com.malisius.monefy.category;
 
 import android.graphics.Color;
 
+import com.malisius.monefy.Expense;
+import com.malisius.monefy.Income;
+
 import java.util.ArrayList;
 
 public class Category {
-    private String mCategoryname;
-    private int mColor;
+    private String name;
+    private int color;
+    private ArrayList<Income> incomes;
+    private  ArrayList<Expense> expenses;
 
-    public Category(String categoryname, int color){
-        mCategoryname = categoryname;
-        mColor = color;
+    public Category() {
     }
 
-    public String getCategoryName(){
-        return mCategoryname;
+    public Category(String name, int color) {
+        this.name = name;
+        this.color = color;
     }
 
-    public int getCategoryColor(){
-        return mColor;
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Income> getIncomes() {
+        return incomes;
+    }
+
+    public ArrayList<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public void setIncomes(ArrayList<Income> incomes) {
+        this.incomes = incomes;
+    }
+
+    public void setExpenses(ArrayList<Expense> expenses) {
+        this.expenses = expenses;
     }
 
     public static ArrayList<Category> createCategoryList(int numCategory) {
