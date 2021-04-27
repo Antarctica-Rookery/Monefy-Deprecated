@@ -25,9 +25,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.malisius.monefy.category.Category;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class RegisterActivity  extends AppCompatActivity {
@@ -71,6 +73,7 @@ public class RegisterActivity  extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             User user_username = new User(username, user.getEmail());
                             mDatabase.getReference("Users").child(mAuth.getUid()).setValue(user_username);
+                            initiateCategory();
                             Bundle userBundle = new Bundle();
                             userBundle.putString("username", username);
                             userBundle.putString("uid", user.getUid());
@@ -138,5 +141,19 @@ public class RegisterActivity  extends AppCompatActivity {
         }
 
         return isOk[0];
+    }
+
+    private void initiateCategory() {
+        DatabaseReference userDataRef = mDatabase.getReference().child(mAuth.getCurrentUser().getUid());
+        ArrayList<Category> categoriesName = new ArrayList<Category>();
+        categoriesName.add(new Category("Food",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+        categoriesName.add(new Category("Shopping",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+        categoriesName.add(new Category("Housing",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+        categoriesName.add(new Category("Transportation",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+        categoriesName.add(new Category("Financial",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+        for(Category category : categoriesName){
+            String categoryKey = userDataRef.push().getKey();
+            userDataRef.child(categoryKey).setValue(category);
+        }
     }
 }

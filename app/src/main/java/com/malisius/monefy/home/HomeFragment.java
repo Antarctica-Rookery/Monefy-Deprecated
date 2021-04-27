@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,7 +29,7 @@ public class HomeFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
-    private ArrayList<Category> mCategoriesList;
+    private ArrayList<Category> mCategoriesList = new ArrayList<Category>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,11 +43,13 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
-//        Category cat = new Category("Food", 00020);
+//        Category cat = new Category("Fashion", 00400);
 //        ArrayList<Income> income = new ArrayList<Income>();
 //        income.add(new Income("gaji", 10000));
+//        income.add(new Income("parttime", 10000));
 //        ArrayList<Expense> expense = new ArrayList<Expense>();
 //        expense.add(new Expense("baso", 2000));
+//        expense.add(new Expense("nasgor", 2000));
 //        cat.setExpenses(expense);
 //        cat.setIncomes(income);
 //        String categoryKey = mDatabase.getReference().child(mAuth.getUid()).push().getKey();
@@ -57,12 +60,16 @@ public class HomeFragment extends Fragment {
         ValueEventListener userDataListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                    Log.i("HomeFragment", dataSnapshot.getValue().toString());
-                    Category category = dataSnapshot.getValue(Category.class);
-                    Log.i("HomeFragment", "hello");
-                }
+                if(!snapshot.exists()){
+                    Log.w("HomeFragment", "No Children");
+                } else {
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                        Log.i("HomeFragment", dataSnapshot.getValue().toString());
 
+                        mCategoriesList.add(dataSnapshot.getValue(Category.class));
+                        Log.i("HomeFragment", "hello");
+                    }
+                }
             }
 
             @Override
@@ -72,7 +79,5 @@ public class HomeFragment extends Fragment {
         };
         userDataRef.addValueEventListener(userDataListener);
 
-//        mDatabase.getReference().child(mAuth.getUid()).setValue(new Category("Gaji", 10020));
-//        mDatabase.getReference().child(mAuth.getUid()).child("Gaji").setValue(new Income("Bulanan", 10000));
     }
 }
