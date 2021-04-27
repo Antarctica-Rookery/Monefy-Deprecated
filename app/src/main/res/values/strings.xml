@@ -5,4 +5,12 @@
     <string name="expense">Expense</string>
     <string name="settings">Settings</string>
     <string name="budget">Budget</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="author1">Arsheldy Alvin</string>
+    <string name="author2">Aurelius Ryo Wang</string>
+    <string name="author3">Axel Patria</string>
+    <string name="author4">Edgar Christian</string>
+    <string name="author5">Julando Omar</string>
+
 </resources>
