@@ -26,7 +26,7 @@
             android:letterSpacing="0.1"
             android:text="@string/settings"
             android:textAllCaps="true"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorPrimary"
             android:textSize="18sp" />
 
         <View
