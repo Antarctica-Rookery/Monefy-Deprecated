@@ -22,16 +22,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/robotocondensed_bold"
-            android:text="Edit/New Category"
-            android:textColor="#000000"
-            android:textSize="24sp" />
+            android:text="New Category"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="18sp" />
 
         <View
             android:id="@+id/divider9"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:background="@color/black" />
+            android:background="?attr/colorPrimary" />
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -54,12 +54,13 @@
 
     <Button
         android:id="@+id/btnYes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:text="Yes"
+        android:textSize="10sp"
         android:theme="@style/ButtonPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,13 +68,14 @@
 
     <Button
         android:id="@+id/btnNo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
         android:text="No"
 
+        android:textSize="10sp"
         android:theme="@style/ButtonSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnYes"
@@ -81,11 +83,12 @@
 
     <ImageView
         android:id="@+id/deleteIcon"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="16dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ticategory"

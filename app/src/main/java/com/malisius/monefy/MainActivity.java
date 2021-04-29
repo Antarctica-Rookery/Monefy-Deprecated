@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,6 +38,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.malisius.monefy.category.Category;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,11 +67,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
         TILusername = findViewById(R.id.tf_username);
         TILpassword = findViewById(R.id.tf_password);
         constraintLayout = findViewById(R.id.main_constraint);
+
+        //declare Google sign in button
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+
         createRequest();
-        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
+        signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 googleSignIn();
@@ -105,8 +115,9 @@ public class MainActivity extends AppCompatActivity {
             TILusername.setError("Username is Empty");
         } else {
             if(!Patterns.EMAIL_ADDRESS.matcher(username).matches()){
-                mDatabase = FirebaseDatabase.getInstance();
+
                 DatabaseReference mUserReference = mDatabase.getReference().child("Users");
+                mUserReference.keepSynced(true);
                 ValueEventListener eventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -204,6 +215,8 @@ public class MainActivity extends AppCompatActivity {
                                             Snackbar.make(constraintLayout,"Unknown Error",Snackbar.LENGTH_SHORT).show();
                                         }
                                     }
+
+                                    initiateCategory();
                                 }
                             });
                 }
@@ -225,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed
+                Log.w("GoogleSignIn", e.getMessage());
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
@@ -239,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success
                             FirebaseUser user = mAuth.getCurrentUser();
+                            initiateCategory();
                             Intent iWannaGoHome = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(iWannaGoHome);
                         } else {
@@ -249,4 +264,38 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    private void initiateCategory() {
+        DatabaseReference userDataRef = mDatabase.getReference("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+//        ArrayList<Category> categoriesName = new ArrayList<Category>();
+        ArrayList<Income> incomes = new ArrayList<Income>();
+        ArrayList<Expense> expenses = new ArrayList<Expense>();
+        incomes.add(new Income("Uang Jajan",((int) (Math.random() *100000000))));
+        incomes.add(new Income("Dropship",((int) (Math.random() *100000000))));
+        incomes.add(new Income("Dagang Kue",((int) (Math.random() *100000000))));
+        incomes.add(new Income("Komisi gambar",((int) (Math.random() *100000000))));
+
+        expenses.add(new Expense("Nasi goreng NRB",((int) (Math.random() *100000000))));
+        expenses.add(new Expense("Beli tang crimping",((int) (Math.random() *100000000))));
+        expenses.add(new Expense("Sedekah ke pengemis",((int) (Math.random() *100000000))));
+        expenses.add(new Expense("Duit ilang",((int) (Math.random() *100000000))));
+//        categoriesName.add(new Category("Food",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+//        categoriesName.add(new Category("Shopping",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+//        categoriesName.add(new Category("Housing",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+//        categoriesName.add(new Category("Transportation",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+//        categoriesName.add(new Category("Financial",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+//        for(Category category : categoriesName){
+//            String categoryKey = userDataRef.push().getKey();
+//            userDataRef.child(categoryKey).setValue(category);
+//        }
+
+        for(Expense expense : expenses){
+            String expenseKey = userDataRef.push().getKey();
+            userDataRef.child(expenseKey).setValue(expense);
+        }
+
+        for(Income income : incomes){
+            String incomeKey = userDataRef.push().getKey();
+            userDataRef.child(incomeKey).setValue(income);
+        }
+    }
 }
