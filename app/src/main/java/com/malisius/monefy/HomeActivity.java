@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -45,6 +46,13 @@ public class HomeActivity extends AppCompatActivity {
 //            mDatabase.getReference().child(mAuth.getUid()).child(key).setValue(cat);
 //        }
 
+        navView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem item) {
+                return;
+            }
+        });
+
         NavController navController = Navigation.findNavController(this, R.id.fragment);
 
         /* Only use this when using appbar
@@ -57,8 +65,9 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Toast toast = Toast.makeText(this, "Press the back button once again to exit", Toast.LENGTH_SHORT);
         if(backPressed == 0){
-            Toast.makeText(this, "Press the back button once again to exit", Toast.LENGTH_SHORT).show();
+           toast.show();
             new CountDownTimer(2000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
@@ -73,6 +82,7 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            toast.cancel();
             startActivity(intent);
         }
         backPressed++;
