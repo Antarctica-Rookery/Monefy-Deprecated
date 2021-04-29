@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +30,10 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
+    private LinearLayout inflaterIncome, inflaterExpense, inflaterBudget;
+    private View incomeCategory,expenseCategory,budgetCategory;
+    private TextView tv_incomename1,tv_incomename2, tv_incomename3, tv_incomename4;
+
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private ArrayList<Category> mCategoriesList = new ArrayList<Category>();
@@ -35,7 +42,29 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View incomeView = inflater.inflate(R.layout.fragment_income, container, false);
+        tv_incomename1 = incomeView.findViewById(R.id.tv_incomecategoryName1);
+        tv_incomename2 = incomeView.findViewById(R.id.tv_incomecategoryName2);
+        tv_incomename3 = incomeView.findViewById(R.id.tv_incomecategoryName3);
+        tv_incomename4 = incomeView.findViewById(R.id.tv_incomecategoryName4);
+
+
+
+        View root =  inflater.inflate(R.layout.fragment_home, container, false);
+        inflaterIncome = root.findViewById(R.id.inflater_income);
+        inflaterExpense = root.findViewById(R.id.inflater_expense);
+        inflaterBudget = root.findViewById(R.id.inflater_budget);
+
+        budgetCategory = getLayoutInflater().inflate(R.layout.inflater_income, inflaterBudget, false);
+        expenseCategory = getLayoutInflater().inflate(R.layout.inflater_expense, inflaterExpense, false);
+        incomeCategory = getLayoutInflater().inflate(R.layout.inflater_income, inflaterIncome, false);
+
+
+        inflaterBudget.addView(budgetCategory);
+        inflaterExpense.addView(expenseCategory);
+        inflaterIncome.addView(incomeCategory);
+
+        return root;
     }
 
     @Override
@@ -44,10 +73,10 @@ public class HomeFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
 //        Category cat = new Category("Fashion", 00400);
-//        ArrayList<Income> income = new ArrayList<Income>();
+        ArrayList<Income> income = new ArrayList<Income>();
 //        income.add(new Income("gaji", 10000));
 //        income.add(new Income("parttime", 10000));
-//        ArrayList<Expense> expense = new ArrayList<Expense>();
+        ArrayList<Expense> expense = new ArrayList<Expense>();
 //        expense.add(new Expense("baso", 2000));
 //        expense.add(new Expense("nasgor", 2000));
 //        cat.setExpenses(expense);
@@ -56,7 +85,12 @@ public class HomeFragment extends Fragment {
 //        mDatabase.getReference().child(mAuth.getUid()).child(categoryKey).setValue(cat);
 //        mDatabase.getReference().child(mAuth.getUid()).child("food").child("Expense").push().setValue(new Expense("Baso",5000));
 //        mDatabase.getReference().child(mAuth.getUid()).child("food").child("Expense").push().setValue(new Expense("Baso",5000));
-        DatabaseReference userDataRef = mDatabase.getReference().child(mAuth.getCurrentUser().getUid());
+        DatabaseReference userDataRef = mDatabase.getReference("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+//        DatabaseReference categoryDataRef = mDatabase.getReference().child("Data").child(userDataRef).child("Categories");
+//        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.inflater_income, userDataRef);
+
+
+
         ValueEventListener userDataListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -64,12 +98,33 @@ public class HomeFragment extends Fragment {
                     Log.w("HomeFragment", "No Children");
                 } else {
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                        Log.i("HomeFragment", dataSnapshot.getValue().toString());
+//                        for(int i=0;i<dataSnapshot.child(""))
+//                        for(int i=0;i<dataSnapshot.getChildrenCount();i++) {
+                            Log.i("HomeFragment", dataSnapshot.getValue().toString());
 
-                        mCategoriesList.add(dataSnapshot.getValue(Category.class));
-                        Log.i("HomeFragment", "hello");
+                            mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().hashCode()));
+//                            mCategoriesList.get(i).setName(dataSnapshot.child("name").getValue().toString());
+//                            mCategoriesList.get(i).setColor(dataSnapshot.child("color").getValue().hashCode());
+//                            mCategoriesList.get(i).setIncomes(expense.add(new Income(dataSnapshot.child("totalIncome").getValue().toString());
+//                            mCategoriesLis.new ().dataSnapshot.child("name").getValue().toString()
+
+//                        mCategoriesList.add(dataSnapshot.getValue(Category.class));
+                            Log.i("HomeFragment", "hello");
+
+//                        }
                     }
+
+                    for(int i=0;i<4;i++) {
+                        Log.i("Home Fragment", mCategoriesList.get(i).getName());
+                    }
+
+                    tv_incomename1.setText(mCategoriesList.get(0).getName());
+                    tv_incomename2.setText(mCategoriesList.get(1).getName());
+                    tv_incomename3.setText(mCategoriesList.get(2).getName());
+                    tv_incomename4.setText(mCategoriesList.get(3).getName());
                 }
+
+
             }
 
             @Override

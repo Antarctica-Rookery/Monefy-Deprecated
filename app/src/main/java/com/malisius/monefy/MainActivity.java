@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
@@ -210,6 +209,8 @@ public class MainActivity extends AppCompatActivity {
                                             Snackbar.make(constraintLayout,"Unknown Error",Snackbar.LENGTH_SHORT).show();
                                         }
                                     }
+
+                                    initiateCategory();
                                 }
                             });
                 }
@@ -258,16 +259,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initiateCategory() {
-        DatabaseReference userDataRef = mDatabase.getReference().child(mAuth.getCurrentUser().getUid());
-        ArrayList<Category> categoriesName = new ArrayList<Category>();
-        categoriesName.add(new Category("Food",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-        categoriesName.add(new Category("Shopping",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-        categoriesName.add(new Category("Housing",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-        categoriesName.add(new Category("Transportation",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-        categoriesName.add(new Category("Financial",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-        for(Category category : categoriesName){
-            String categoryKey = userDataRef.push().getKey();
-            userDataRef.child(categoryKey).setValue(category);
+        DatabaseReference userDataRef = mDatabase.getReference("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+//        ArrayList<Category> categoriesName = new ArrayList<Category>();
+        ArrayList<Income> incomes = new ArrayList<Income>();
+        ArrayList<Expense> expenses = new ArrayList<Expense>();
+        incomes.add(new Income("Uang Jajan",((int) (Math.random() *100000000))));
+        incomes.add(new Income("Dropship",((int) (Math.random() *100000000))));
+        incomes.add(new Income("Dagang Kue",((int) (Math.random() *100000000))));
+        incomes.add(new Income("Komisi gambar",((int) (Math.random() *100000000))));
+
+        expenses.add(new Expense("Nasi goreng NRB",((int) (Math.random() *100000000))));
+        expenses.add(new Expense("Beli tang crimping",((int) (Math.random() *100000000))));
+        expenses.add(new Expense("Sedekah ke pengemis",((int) (Math.random() *100000000))));
+        expenses.add(new Expense("Duit ilang",((int) (Math.random() *100000000))));
+//        categoriesName.add(new Category("Food",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+//        categoriesName.add(new Category("Shopping",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+//        categoriesName.add(new Category("Housing",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+//        categoriesName.add(new Category("Transportation",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+//        categoriesName.add(new Category("Financial",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+//        for(Category category : categoriesName){
+//            String categoryKey = userDataRef.push().getKey();
+//            userDataRef.child(categoryKey).setValue(category);
+//        }
+
+        for(Expense expense : expenses){
+            String expenseKey = userDataRef.push().getKey();
+            userDataRef.child(expenseKey).setValue(expense);
+        }
+
+        for(Income income : incomes){
+            String incomeKey = userDataRef.push().getKey();
+            userDataRef.child(incomeKey).setValue(income);
         }
     }
 }
