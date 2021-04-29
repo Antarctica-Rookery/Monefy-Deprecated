@@ -85,11 +85,10 @@ public class HomeFragment extends Fragment {
 //        mDatabase.getReference().child(mAuth.getUid()).child(categoryKey).setValue(cat);
 //        mDatabase.getReference().child(mAuth.getUid()).child("food").child("Expense").push().setValue(new Expense("Baso",5000));
 //        mDatabase.getReference().child(mAuth.getUid()).child("food").child("Expense").push().setValue(new Expense("Baso",5000));
-        DatabaseReference userDataRef = mDatabase.getReference("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
 //        DatabaseReference categoryDataRef = mDatabase.getReference().child("Data").child(userDataRef).child("Categories");
 //        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.inflater_income, userDataRef);
 
-
+        DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
 
         ValueEventListener userDataListener = new ValueEventListener() {
             @Override

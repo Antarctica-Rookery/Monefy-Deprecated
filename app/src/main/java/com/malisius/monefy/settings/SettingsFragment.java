@@ -36,9 +36,11 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
+        //init Firebase to get username and email
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
 
+        //change username and email placeholder
         usernameTv = root.findViewById(R.id.username);
         emailTv = root.findViewById(R.id.email);
         DatabaseReference userReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("username");
@@ -59,6 +61,7 @@ public class SettingsFragment extends Fragment {
         };
         userReference.addValueEventListener(userEventListener);
         emailTv.setText(mAuth.getCurrentUser().getEmail());
+
         //go to about us
         aboutUs = root.findViewById(R.id.aboutus);
         aboutUs.setOnClickListener(new View.OnClickListener() {

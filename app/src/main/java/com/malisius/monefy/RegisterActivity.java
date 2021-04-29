@@ -144,7 +144,7 @@ public class RegisterActivity  extends AppCompatActivity {
     }
 
     private void initiateCategory() {
-        DatabaseReference userDataRef = mDatabase.getReference().child(mAuth.getCurrentUser().getUid());
+        DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
         ArrayList<Category> categoriesName = new ArrayList<Category>();
         categoriesName.add(new Category("Food",( (int) (Math.random()*16777215)) | (0xFF << 24)));
         categoriesName.add(new Category("Shopping",( (int) (Math.random()*16777215)) | (0xFF << 24)));
