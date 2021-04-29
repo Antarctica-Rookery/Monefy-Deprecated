@@ -1,16 +1,27 @@
 package com.malisius.monefy;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     private int backPressed = 0;
@@ -41,6 +52,7 @@ public class HomeActivity extends AppCompatActivity {
          */
 
         NavigationUI.setupWithNavController(navView, navController);
+
     }
 
     @Override
@@ -65,4 +77,6 @@ public class HomeActivity extends AppCompatActivity {
         }
         backPressed++;
     }
+
 }
+
