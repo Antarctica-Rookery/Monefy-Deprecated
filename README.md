@@ -10,8 +10,11 @@ built with android materials design and firebase database
 
 - Frontend
   - ~~Main Activity Page~~
-  - Login And Register Activity
+  - ~~Login And Register Activity~~
   - Home Activity
   - DeveloperView Activity/Fragment
 - Backend
-  - Initiate firebase
+  - ~~Initiate firebase~~
+  - ~~Push Category data to firebase~~
+  - ~~Push Budget to firebase~~
+  - Testing income budget
