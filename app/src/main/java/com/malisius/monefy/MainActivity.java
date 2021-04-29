@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
                                         Bundle userBundle = new Bundle();
                                         userBundle.putString("username", username);
                                         userBundle.putString("uid", user.getUid());
+//                                        initiateCategory();
                                         Snackbar.make(constraintLayout,"Login Successful",Snackbar.LENGTH_SHORT).show();
                                         Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
                                         homeIntent.putExtra("USER_DATA", userBundle);
@@ -216,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     }
 
-                                    initiateCategory();
                                 }
                             });
                 }
@@ -253,7 +253,6 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success
                             FirebaseUser user = mAuth.getCurrentUser();
-                            initiateCategory();
                             Intent iWannaGoHome = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(iWannaGoHome);
                         } else {
@@ -264,38 +263,46 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void initiateCategory() {
-        DatabaseReference userDataRef = mDatabase.getReference("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+//    private void initiateCategory() {
+//
+//        Log.i("MainActivity", "masuk");
+//        DatabaseReference userDataRef = mDatabase.getReference("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
 //        ArrayList<Category> categoriesName = new ArrayList<Category>();
-        ArrayList<Income> incomes = new ArrayList<Income>();
-        ArrayList<Expense> expenses = new ArrayList<Expense>();
-        incomes.add(new Income("Uang Jajan",((int) (Math.random() *100000000))));
-        incomes.add(new Income("Dropship",((int) (Math.random() *100000000))));
-        incomes.add(new Income("Dagang Kue",((int) (Math.random() *100000000))));
-        incomes.add(new Income("Komisi gambar",((int) (Math.random() *100000000))));
-
-        expenses.add(new Expense("Nasi goreng NRB",((int) (Math.random() *100000000))));
-        expenses.add(new Expense("Beli tang crimping",((int) (Math.random() *100000000))));
-        expenses.add(new Expense("Sedekah ke pengemis",((int) (Math.random() *100000000))));
-        expenses.add(new Expense("Duit ilang",((int) (Math.random() *100000000))));
+//        ArrayList<Income> incomes = new ArrayList<Income>();
+//        ArrayList<Expense> expenses = new ArrayList<Expense>();
+//        incomes.add(new Income("Uang Jajan",((int) (Math.random() *100000000))));
+//        incomes.add(new Income("Dropship",((int) (Math.random() *100000000))));
+//        incomes.add(new Income("Dagang Kue",((int) (Math.random() *100000000))));
+//        incomes.add(new Income("Komisi gambar",((int) (Math.random() *100000000))));
+//
+//        expenses.add(new Expense("Nasi goreng NRB",((int) (Math.random() *100000000))));
+//        expenses.add(new Expense("Beli tang crimping",((int) (Math.random() *100000000))));
+//        expenses.add(new Expense("Sedekah ke pengemis",((int) (Math.random() *100000000))));
+//        expenses.add(new Expense("Duit ilang",((int) (Math.random() *100000000))));
+//
 //        categoriesName.add(new Category("Food",( (int) (Math.random()*16777215)) | (0xFF << 24)));
 //        categoriesName.add(new Category("Shopping",( (int) (Math.random()*16777215)) | (0xFF << 24)));
 //        categoriesName.add(new Category("Housing",( (int) (Math.random()*16777215)) | (0xFF << 24)));
 //        categoriesName.add(new Category("Transportation",( (int) (Math.random()*16777215)) | (0xFF << 24)));
 //        categoriesName.add(new Category("Financial",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+//
+//        for(int i=0;i<4;i++) {
+//            categoriesName.get(i).setIncomes(incomes);
+//        }
+//
 //        for(Category category : categoriesName){
 //            String categoryKey = userDataRef.push().getKey();
 //            userDataRef.child(categoryKey).setValue(category);
 //        }
-
-        for(Expense expense : expenses){
-            String expenseKey = userDataRef.push().getKey();
-            userDataRef.child(expenseKey).setValue(expense);
-        }
-
-        for(Income income : incomes){
-            String incomeKey = userDataRef.push().getKey();
-            userDataRef.child(incomeKey).setValue(income);
-        }
-    }
+//
+////        for(Expense expense : expenses){
+////            String expenseKey = userDataRef.push().getKey();
+////            userDataRef.child(expenseKey).setValue(expense);
+////        }
+////
+////        for(Income income : incomes){
+////            String incomeKey = userDataRef.push().getKey();
+////            userDataRef.child(incomeKey).setValue(income);
+////        }
+//    }
 }

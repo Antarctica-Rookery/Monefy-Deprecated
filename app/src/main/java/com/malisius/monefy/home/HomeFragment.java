@@ -42,18 +42,16 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View incomeView = inflater.inflate(R.layout.fragment_income, container, false);
-        tv_incomename1 = incomeView.findViewById(R.id.tv_incomecategoryName1);
-        tv_incomename2 = incomeView.findViewById(R.id.tv_incomecategoryName2);
-        tv_incomename3 = incomeView.findViewById(R.id.tv_incomecategoryName3);
-        tv_incomename4 = incomeView.findViewById(R.id.tv_incomecategoryName4);
-
-
 
         View root =  inflater.inflate(R.layout.fragment_home, container, false);
         inflaterIncome = root.findViewById(R.id.inflater_income);
         inflaterExpense = root.findViewById(R.id.inflater_expense);
         inflaterBudget = root.findViewById(R.id.inflater_budget);
+
+        tv_incomename1 = root.findViewById(R.id.tv_incomecategoryName1);
+        tv_incomename2 = root.findViewById(R.id.tv_incomecategoryName2);
+        tv_incomename3 = root.findViewById(R.id.tv_incomecategoryName3);
+        tv_incomename4 = root.findViewById(R.id.tv_incomecategoryName4);
 
         budgetCategory = getLayoutInflater().inflate(R.layout.inflater_income, inflaterBudget, false);
         expenseCategory = getLayoutInflater().inflate(R.layout.inflater_expense, inflaterExpense, false);
@@ -99,16 +97,16 @@ public class HomeFragment extends Fragment {
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
 //                        for(int i=0;i<dataSnapshot.child(""))
 //                        for(int i=0;i<dataSnapshot.getChildrenCount();i++) {
-                            Log.i("HomeFragment", dataSnapshot.getValue().toString());
+                        Log.i("HomeFragment", dataSnapshot.getValue().toString());
 
-                            mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().hashCode()));
+                        mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().hashCode()));
 //                            mCategoriesList.get(i).setName(dataSnapshot.child("name").getValue().toString());
 //                            mCategoriesList.get(i).setColor(dataSnapshot.child("color").getValue().hashCode());
 //                            mCategoriesList.get(i).setIncomes(expense.add(new Income(dataSnapshot.child("totalIncome").getValue().toString());
 //                            mCategoriesLis.new ().dataSnapshot.child("name").getValue().toString()
 
 //                        mCategoriesList.add(dataSnapshot.getValue(Category.class));
-                            Log.i("HomeFragment", "hello");
+                        Log.i("HomeFragment", "hello");
 
 //                        }
                     }
