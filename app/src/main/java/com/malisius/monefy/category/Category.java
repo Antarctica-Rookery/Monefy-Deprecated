@@ -6,6 +6,7 @@ import com.malisius.monefy.Expense;
 import com.malisius.monefy.Income;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Category {
     private String name;
@@ -72,6 +73,65 @@ public class Category {
             }
         }
     }
+
+    public static Comparator<Category> totalIncomeComparatorAsc = new Comparator<Category>() {
+
+        public int compare(Category s1,Category s2) {
+
+            int income1 = s1.getTotalIncome();
+            int income2 = s2.getTotalIncome();
+
+            /*For ascending order*/
+            return income1-income2;
+        }
+    };
+
+    public static Comparator<Category> totalIncomeComparatorDesc = new Comparator<Category>() {
+
+        public int compare(Category s1,Category s2) {
+
+            int income1 = s1.getTotalIncome();
+            int income2 = s2.getTotalIncome();
+
+            /*For ascending order*/
+            return income2-income1;
+        }
+    };
+
+    public static Comparator<Category> totalExpenseComparatorAsc = new Comparator<Category>() {
+
+        public int compare(Category s1,Category s2) {
+
+            int income1 = s1.getTotalExpense();
+            int income2 = s2.getTotalExpense();
+
+            /*For ascending order*/
+            return income1-income2;
+        }
+    };
+
+    public static Comparator<Category> totalExpenseComparatorDesc = new Comparator<Category>() {
+
+        public int compare(Category s1,Category s2) {
+
+            int income1 = s1.getTotalExpense();
+            int income2 = s2.getTotalExpense();
+
+            /*For ascending order*/
+            return income2-income1;
+        }
+    };
+
+    public static Comparator<Category> categoryNameComparator = new Comparator<Category>() {
+
+        public int compare(Category s1, Category s2) {
+            String StudentName1 = s1.getName().toUpperCase();
+            String StudentName2 = s2.getName().toUpperCase();
+
+            //ascending order
+            return StudentName1.compareTo(StudentName2);
+        }
+    };
 
     public static ArrayList<Category> createCategoryList(int numCategory) {
         ArrayList<Category> contacts = new ArrayList<Category>();

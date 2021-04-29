@@ -27,12 +27,14 @@ import com.malisius.monefy.R;
 import com.malisius.monefy.category.Category;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HomeFragment extends Fragment {
 
     private LinearLayout inflaterIncome, inflaterExpense, inflaterBudget;
     private View incomeCategory,expenseCategory,budgetCategory;
     private TextView tv_incomename1,tv_incomename2, tv_incomename3, tv_incomename4;
+    private ArrayList<TextView> textViews = new ArrayList<TextView>();
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
@@ -42,11 +44,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View incomeView = inflater.inflate(R.layout.fragment_income, container, false);
-        tv_incomename1 = incomeView.findViewById(R.id.tv_incomecategoryName1);
-        tv_incomename2 = incomeView.findViewById(R.id.tv_incomecategoryName2);
-        tv_incomename3 = incomeView.findViewById(R.id.tv_incomecategoryName3);
-        tv_incomename4 = incomeView.findViewById(R.id.tv_incomecategoryName4);
+
 
 
 
@@ -63,6 +61,17 @@ public class HomeFragment extends Fragment {
         inflaterBudget.addView(budgetCategory);
         inflaterExpense.addView(expenseCategory);
         inflaterIncome.addView(incomeCategory);
+
+        tv_incomename1 = root.findViewById(R.id.tv_incomecategoryName1);
+        textViews.add(tv_incomename1);
+        tv_incomename2 = root.findViewById(R.id.tv_incomecategoryName2);
+        textViews.add(tv_incomename2);
+        tv_incomename3 = root.findViewById(R.id.tv_incomecategoryName3);
+        textViews.add(tv_incomename3);
+        tv_incomename4 = root.findViewById(R.id.tv_incomecategoryName4);
+        textViews.add(tv_incomename4);
+
+
 
         return root;
     }
@@ -112,15 +121,13 @@ public class HomeFragment extends Fragment {
 
 //                        }
                     }
+                    Collections.sort(mCategoriesList, Category.categoryNameComparator);
 
-                    for(int i=0;i<4;i++) {
-                        Log.i("Home Fragment", mCategoriesList.get(i).getName());
+                    for(int i = 0; i < 4; i++){
+                        TextView textView = textViews.get(i);
+                        textView.setText(mCategoriesList.get(i).getName());
                     }
 
-                    tv_incomename1.setText(mCategoriesList.get(0).getName());
-                    tv_incomename2.setText(mCategoriesList.get(1).getName());
-                    tv_incomename3.setText(mCategoriesList.get(2).getName());
-                    tv_incomename4.setText(mCategoriesList.get(3).getName());
                 }
 
 

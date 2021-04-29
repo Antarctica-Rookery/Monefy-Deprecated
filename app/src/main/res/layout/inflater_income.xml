@@ -25,7 +25,7 @@
 
         <TextView
             android:id="@+id/tv_incomecategoryName1"
-            android:layout_width="wrap_content"
+            android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="0.7"
@@ -80,7 +80,7 @@
 
         <TextView
             android:id="@+id/tv_incomecategoryName2"
-            android:layout_width="wrap_content"
+            android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="0.7"
@@ -134,7 +134,7 @@
 
         <TextView
             android:id="@+id/tv_incomecategoryName3"
-            android:layout_width="wrap_content"
+            android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="0.7"
@@ -188,7 +188,7 @@
 
         <TextView
             android:id="@+id/tv_incomecategoryName4"
-            android:layout_width="wrap_content"
+            android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="0.7"
