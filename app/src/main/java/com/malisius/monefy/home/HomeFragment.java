@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,6 +69,16 @@ public class HomeFragment extends Fragment {
             incomeInsertPoint.addView(categoryItem);
         }
         show_more = getLayoutInflater().inflate(R.layout.show_more_layout, null);
+
+        //go to income activity
+        show_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(getActivity(), getActivity().findViewById(R.id.fragment).getId());
+                navController.navigate(R.id.incomeFragment);
+            }
+        });
+
         incomeInsertPoint.addView(show_more);
     }
 
@@ -76,6 +88,16 @@ public class HomeFragment extends Fragment {
             expenseInsertPoint.addView(categoryItem);
         }
         show_more = getLayoutInflater().inflate(R.layout.show_more_layout, null);
+
+        //go to expense activity
+        show_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(getActivity(), getActivity().findViewById(R.id.fragment).getId());
+                navController.navigate(R.id.expenseFragment);
+            }
+        });
+
         expenseInsertPoint.addView(show_more);
     }
 
@@ -85,6 +107,16 @@ public class HomeFragment extends Fragment {
             budgetInsertPoint.addView(categoryItem);
         }
         show_more = getLayoutInflater().inflate(R.layout.show_more_layout, null);
+
+        //go to budget activity
+        show_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(getActivity(), getActivity().findViewById(R.id.fragment).getId());
+                navController.navigate(R.id.budgetFragment);
+            }
+        });
+
         budgetInsertPoint.addView(show_more);
     }
 

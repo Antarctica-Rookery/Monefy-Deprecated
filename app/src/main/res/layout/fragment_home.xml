@@ -114,6 +114,7 @@
     </androidx.cardview.widget.CardView>
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -177,28 +178,28 @@
                         <View
                             android:id="@+id/category1_bar"
                             android:layout_width="wrap_content"
-                            android:layout_height="8dp"
+                            android:layout_height="4dp"
                             android:layout_weight="1"
                             android:background="#C3FBBD" />
 
                         <View
                             android:id="@+id/category2_bar"
                             android:layout_width="wrap_content"
-                            android:layout_height="8dp"
+                            android:layout_height="4dp"
                             android:layout_weight="1"
                             android:background="#86DF7E" />
 
                         <View
                             android:id="@+id/category3_bar"
                             android:layout_width="wrap_content"
-                            android:layout_height="8dp"
+                            android:layout_height="4dp"
                             android:layout_weight="1"
                             android:background="#65AE5D" />
 
                         <View
                             android:id="@+id/category4_bar"
                             android:layout_width="wrap_content"
-                            android:layout_height="8dp"
+                            android:layout_height="4dp"
                             android:layout_weight="1"
                             android:background="#287321" />
 
