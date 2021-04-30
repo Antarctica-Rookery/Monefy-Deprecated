@@ -109,22 +109,19 @@
                     android:textFontWeight="500"
                     android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ic_baseline_arrow_forward_ios_24"
-                    android:textColor="@color/black"
-                    android:textFontWeight="500"
-                    tools:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -133,34 +130,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/alertcard">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardElevation="10dp">
+                app:cardElevation="10dp"
+                app:layout_constraintTop_toBottomOf="@id/inflater_expense">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_budget"
+                        android:id="@+id/tv_income"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/robotocondensed_regular"
-                        android:text="@string/budget"
+                        android:text="@string/income"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv_total_budget"
+                        android:id="@+id/tv_total_income"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -169,27 +164,57 @@
                         android:text="Rp. 4.000.000"
                         android:textSize="36sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_budget" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="17dp"
-                        android:layout_marginTop="4dp"
-                        android:progress="100"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_total_budget" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_income" />
 
                     <LinearLayout
-                        android:id="@+id/inflater_budget"
-                        android:layout_width="match_parent"
+                        android:id="@+id/income_bar"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/progressBar">
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_income">
+
+                        <View
+                            android:id="@+id/category1_bar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="4dp"
+                            android:layout_weight="1"
+                            android:background="#C3FBBD" />
+
+                        <View
+                            android:id="@+id/category2_bar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="4dp"
+                            android:layout_weight="1"
+                            android:background="#86DF7E" />
+
+                        <View
+                            android:id="@+id/category3_bar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="4dp"
+                            android:layout_weight="1"
+                            android:background="#65AE5D" />
+
+                        <View
+                            android:id="@+id/category4_bar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="4dp"
+                            android:layout_weight="1"
+                            android:background="#287321" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/inflater_income"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/income_bar">
 
                     </LinearLayout>
 
@@ -235,9 +260,10 @@
                         android:id="@+id/progressBar2"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="17dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:progress="100"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_total_expense" />
 
@@ -245,8 +271,8 @@
                         android:id="@+id/inflater_expense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
                         android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/progressBar2">
@@ -262,26 +288,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="24dp"
-                app:cardElevation="10dp"
-                app:layout_constraintTop_toBottomOf="@id/inflater_expense">
+                app:cardElevation="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_income"
+                        android:id="@+id/tv_budget"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/robotocondensed_regular"
-                        android:text="@string/income"
+                        android:text="@string/budget"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tv_total_income"
+                        android:id="@+id/tv_total_budget"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -290,27 +315,28 @@
                         android:text="Rp. 4.000.000"
                         android:textSize="36sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_income" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_budget" />
 
                     <ProgressBar
-                        android:id="@+id/progressBar3"
+                        android:id="@+id/progressBar"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="17dp"
-                        android:layout_marginTop="4dp"
                         android:progress="100"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_total_income" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_total_budget" />
 
                     <LinearLayout
-                        android:id="@+id/inflater_income"
+                        android:id="@+id/inflater_budget"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/progressBar3">
+                        app:layout_constraintTop_toBottomOf="@id/progressBar">
 
                     </LinearLayout>
 
