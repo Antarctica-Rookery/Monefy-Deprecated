@@ -100,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(signUpIntent);
     }
 
+    public void forgotPassword(View view){
+        Intent forgotIntent = new Intent(MainActivity.this, ForgotActivity.class);
+        startActivity(forgotIntent);
+    }
+
     public void googleSignIn(){
         //Google Sign-In
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -224,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
