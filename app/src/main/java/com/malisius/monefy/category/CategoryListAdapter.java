@@ -44,7 +44,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         textView.setText(category.getName());
 
         View view_color = holder.categoryColor;
-        view_color.setBackgroundColor(category.getColor());
+        view_color.setBackgroundColor(0xff000000 + Integer.parseInt(Integer.toHexString(category.getColor()),16));
     }
 
     @Override

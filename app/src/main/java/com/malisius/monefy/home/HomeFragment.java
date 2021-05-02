@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,12 +29,15 @@ import com.malisius.monefy.R;
 import com.malisius.monefy.category.Category;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class HomeFragment extends Fragment {
 
-    private LinearLayout inflaterIncome, inflaterExpense, inflaterBudget;
-    private View incomeCategory,expenseCategory,budgetCategory;
-    private TextView tv_incomename1,tv_incomename2, tv_incomename3, tv_incomename4;
+    private LinearLayout incomeInsertPoint, expenseInsertPoint, budgetInsertPoint;
+    private View categoryItem, show_more;
+
+    private ArrayList<TextView> textViews = new ArrayList<TextView>();
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
@@ -41,30 +46,78 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        View incomeView = inflater.inflate(R.layout.fragment_income, container, false);
-        tv_incomename1 = incomeView.findViewById(R.id.tv_incomecategoryName1);
-        tv_incomename2 = incomeView.findViewById(R.id.tv_incomecategoryName2);
-        tv_incomename3 = incomeView.findViewById(R.id.tv_incomecategoryName3);
-        tv_incomename4 = incomeView.findViewById(R.id.tv_incomecategoryName4);
-
-
-
         View root =  inflater.inflate(R.layout.fragment_home, container, false);
-        inflaterIncome = root.findViewById(R.id.inflater_income);
-        inflaterExpense = root.findViewById(R.id.inflater_expense);
-        inflaterBudget = root.findViewById(R.id.inflater_budget);
 
-        budgetCategory = getLayoutInflater().inflate(R.layout.inflater_income, inflaterBudget, false);
-        expenseCategory = getLayoutInflater().inflate(R.layout.inflater_expense, inflaterExpense, false);
-        incomeCategory = getLayoutInflater().inflate(R.layout.inflater_income, inflaterIncome, false);
+        //get insert point for category item
+        incomeInsertPoint = root.findViewById(R.id.inflater_income);
+        handleIncome();
 
+        expenseInsertPoint = root.findViewById(R.id.inflater_expense);
+        handleExpense();
 
-        inflaterBudget.addView(budgetCategory);
-        inflaterExpense.addView(expenseCategory);
-        inflaterIncome.addView(incomeCategory);
+        budgetInsertPoint = root.findViewById(R.id.inflater_budget);
+        handleBudget();
 
         return root;
+    }
+
+    private void handleIncome(){
+        for(int i=0; i < 4; i++ ){
+            categoryItem = getLayoutInflater().inflate(R.layout.income_item_layout, null);
+            incomeInsertPoint.addView(categoryItem);
+        }
+        show_more = getLayoutInflater().inflate(R.layout.show_more_layout, null);
+
+        //go to income activity
+        show_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(getActivity(), getActivity().findViewById(R.id.fragment).getId());
+                navController.navigate(R.id.incomeFragment);
+            }
+        });
+
+        incomeInsertPoint.addView(show_more);
+    }
+
+    private void handleExpense(){
+        for(int i=0; i < 4; i++ ){
+            categoryItem = getLayoutInflater().inflate(R.layout.expense_item_layout, null);
+            expenseInsertPoint.addView(categoryItem);
+        }
+        show_more = getLayoutInflater().inflate(R.layout.show_more_layout, null);
+
+        //go to expense activity
+        show_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(getActivity(), getActivity().findViewById(R.id.fragment).getId());
+                navController.navigate(R.id.expenseFragment);
+            }
+        });
+
+        expenseInsertPoint.addView(show_more);
+    }
+
+    private void handleBudget(){
+        for(int i=0; i < 4; i++ ){
+            categoryItem = getLayoutInflater().inflate(R.layout.budget_item_layout, null);
+            budgetInsertPoint.addView(categoryItem);
+        }
+        show_more = getLayoutInflater().inflate(R.layout.show_more_layout, null);
+
+        //go to budget activity
+        show_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(getActivity(), getActivity().findViewById(R.id.fragment).getId());
+                navController.navigate(R.id.budgetFragment);
+            }
+        });
+
+        budgetInsertPoint.addView(show_more);
     }
 
     @Override
@@ -112,18 +165,13 @@ public class HomeFragment extends Fragment {
 
 //                        }
                     }
+                    Collections.sort(mCategoriesList, Category.categoryNameComparator);
 
-                    for(int i=0;i<4;i++) {
-                        Log.i("Home Fragment", mCategoriesList.get(i).getName());
-                    }
-
-                    tv_incomename1.setText(mCategoriesList.get(0).getName());
-                    tv_incomename2.setText(mCategoriesList.get(1).getName());
-                    tv_incomename3.setText(mCategoriesList.get(2).getName());
-                    tv_incomename4.setText(mCategoriesList.get(3).getName());
+//                    for(int i = 0; i < 4; i++){
+//                        TextView textView = textViews.get(i);
+//                        textView.setText(mCategoriesList.get(i).getName());
+//                    }
                 }
-
-
             }
 
             @Override

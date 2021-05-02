@@ -3,11 +3,14 @@ package com.malisius.monefy;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.os.Bundle;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -22,16 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-
-
-
-
+    private int backPressed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
 
         BottomNavigationView navView = findViewById(R.id.bottom_nav);
 
@@ -47,6 +46,14 @@ public class HomeActivity extends AppCompatActivity {
 //            mDatabase.getReference().child(mAuth.getUid()).child(key).setValue(cat);
 //        }
 
+        //clicking the same navigation bar item won't reopen the fragment
+        navView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem item) {
+                return;
+            }
+        });
+
         NavController navController = Navigation.findNavController(this, R.id.fragment);
 
         /* Only use this when using appbar
@@ -55,8 +62,32 @@ public class HomeActivity extends AppCompatActivity {
 
         NavigationUI.setupWithNavController(navView, navController);
 
-
-
     }
+
+    @Override
+    public void onBackPressed() {
+        Toast toast = Toast.makeText(this, "Press the back button once again to exit", Toast.LENGTH_SHORT);
+        if(backPressed == 0){
+           toast.show();
+            new CountDownTimer(2000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                public void onFinish() {
+                    backPressed = 0;
+                }
+            }.start();
+        }else {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            toast.cancel();
+            startActivity(intent);
+        }
+        backPressed++;
+    }
+
 }
 
