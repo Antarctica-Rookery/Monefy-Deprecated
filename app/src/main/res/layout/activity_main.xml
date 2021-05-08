@@ -114,6 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginTop="8dp"
+            android:onClick="forgotPassword"
             android:text="Forgot Password?"
             android:textColor="@color/grey"
             android:textFontWeight="500"

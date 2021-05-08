@@ -32,11 +32,6 @@ public class CategoryActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ImageView back;
     private CardView cardView;
-    private AlertDialog.Builder myDialog;
-    private Button submitDialog, cancelDialog;
-    private LayoutInflater inflater;
-    private View myDialogView;
-    private TextInputLayout categoryName;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
@@ -79,6 +74,7 @@ public class CategoryActivity extends AppCompatActivity {
         //fetch categories from database
         initCategory();
 
+        //init recyclerview
         recyclerView = findViewById(R.id.recyclercategories);
         CategoryListAdapter adapter = new CategoryListAdapter(mCategoriesList);
         recyclerView.setAdapter(adapter);
@@ -92,13 +88,13 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(!snapshot.exists()){
-                    Log.w("HomeFragment", "No Children");
+                    Log.w("CategoryActivity", "No Children");
                 } else {
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                        Log.i("HomeFragment", dataSnapshot.getValue().toString());
+                        Log.i("CategoryActivity", dataSnapshot.getValue().toString());
 
                         mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().hashCode()));
-                        Log.i("HomeFragment", "hello");
+                        Log.i("CategoryActivity", "hello");
                     }
                     Collections.sort(mCategoriesList, Category.categoryNameComparator);
                 }
@@ -106,35 +102,14 @@ public class CategoryActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("HomeFragment", "loadPost:onCancelled", error.toException());
+                Log.w("CategoryActivity", "loadPost:onCancelled", error.toException());
             }
         };
         userDataRef.addValueEventListener(userDataListener);
     }
 
     private void createDialog() {
-        myDialog = new AlertDialog.Builder(this);
-        inflater = getLayoutInflater();
-        myDialogView = inflater.inflate(R.layout.edit_category_layout, null);
-
-        myDialog.setView(myDialogView);
-        myDialog.setCancelable(true);
-
-        submitDialog = myDialogView.findViewById(R.id.btnYes);
-        cancelDialog = myDialogView.findViewById(R.id.btnNo);
-
-        categoryName = myDialogView.findViewById(R.id.ticategory);
-
-        final AlertDialog dialog = myDialog.create();
-
-        cancelDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        
-        dialog.show();
-
+        CategoryDialog dialog = new CategoryDialog();
+        dialog.showAddDialog(this,null);
     }
 }
