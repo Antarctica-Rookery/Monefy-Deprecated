@@ -40,7 +40,8 @@ import java.util.Locale;
 public class HomeFragment extends Fragment {
 
     private LinearLayout incomeInsertPoint, expenseInsertPoint, budgetInsertPoint;
-    private View categoryItem, show_more;
+    private View categoryItem, show_more, rootView;
+    private int categories_size, budget_size = 0;
 
     private ArrayList<TextView> textViews = new ArrayList<TextView>();
 
@@ -55,11 +56,89 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_home, container, false);
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
+        ArrayList<Income> income = new ArrayList<Income>();
 
-        handleTotal(root);
+        ArrayList<Expense> expense = new ArrayList<Expense>();
+
+        DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+
+        ValueEventListener userDataListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mCategoriesList.clear();
+                if(!snapshot.exists()){
+                    Log.w("HomeFragment", "No Children");
+                } else {
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+//                        for(int i=0;i<dataSnapshot.child(""))
+//                        for(int i=0;i<dataSnapshot.getChildrenCount();i++) {
+                        Log.i("HomeFragment", dataSnapshot.getValue().toString());
+
+                        mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().toString()));
+                        Log.i("HomeFragment", "hello");
+
+//                        }
+                    }
+                    Collections.sort(mCategoriesList, Category.categoryNameComparator);
+                    if(mCategoriesList.size() > 4) categories_size = 4;
+                    else {
+                        categories_size = mCategoriesList.size();
+                    }
+
+                    handleIncome();
+                    handleExpense();
+                    handleTotal(rootView);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("HomeFragment", "loadPost:onCancelled", error.toException());
+            }
+        };
+        userDataRef.addValueEventListener(userDataListener);
+
+        DatabaseReference userBudgetRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Budget");
+
+        ValueEventListener userBudgetListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    Log.w("HomeFragment", "No Children");
+                } else {
+                    mBudgetList.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+
+                        mBudgetList.add(new Budget(dataSnapshot.child("limit").getValue().hashCode(), dataSnapshot.child("value").getValue().hashCode(),dataSnapshot.child("name").getValue().toString()));
+                        Log.i("HomeFragment", "hello");
+
+//                        }
+                    }
+                    Collections.sort(mBudgetList, Budget.budgetComparatorDesc);
+                    if(mBudgetList.size() > 4) budget_size = 4;
+                    else {
+                        budget_size = mBudgetList.size();
+                    }
+                    handleBudget();
+                    handleTotal(rootView);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("HomeFragment", "loadPost:onCancelled", error.toException());
+            }
+        };
+        userBudgetRef.addValueEventListener(userBudgetListener);
+
+        rootView = root;
 
         //get insert point for category item
         incomeInsertPoint = root.findViewById(R.id.inflater_income);
+
 
         expenseInsertPoint = root.findViewById(R.id.inflater_expense);
 
@@ -67,6 +146,7 @@ public class HomeFragment extends Fragment {
 
 
         return root;
+
     }
 
     private String formatRupiah(int number){
@@ -96,7 +176,7 @@ public class HomeFragment extends Fragment {
 
     private void handleIncome(){
 
-        for(int i=0; i < 4; i++ ){
+        for(int i=0; i < categories_size; i++ ){
             categoryItem = getLayoutInflater().inflate(R.layout.income_item_layout, null);
             TextView categoryName = categoryItem.findViewById(R.id.tv_incomecategoryName);
             TextView categoryTotal = categoryItem.findViewById(R.id.income_category_total);
@@ -136,7 +216,7 @@ public class HomeFragment extends Fragment {
 
     private void handleExpense(){
 
-        for(int i=0; i < 4; i++ ){
+        for(int i=0; i < categories_size; i++ ){
             categoryItem = getLayoutInflater().inflate(R.layout.expense_item_layout, null);
             TextView categoryName = categoryItem.findViewById(R.id.tv_expense_categoryName);
             TextView categoryTotal = categoryItem.findViewById(R.id.expense_category_total);
@@ -178,7 +258,7 @@ public class HomeFragment extends Fragment {
 
     }
     private void handleBudget(){
-        for(int i=0; i < 4; i++ ){
+        for(int i=0; i < budget_size; i++ ){
             categoryItem = getLayoutInflater().inflate(R.layout.budget_item_layout, null);
             TextView budgetName = categoryItem.findViewById(R.id.item_budget_name);
             TextView budgetLimit = categoryItem.findViewById(R.id.item_budget_total);
@@ -189,11 +269,16 @@ public class HomeFragment extends Fragment {
             budgetValue.setText(formatRupiah(mBudgetList.get(i).getValue()));
             float progress;
             if(mBudgetList.get(i).getLimit() > 0){
-                progress = (float) mBudgetList.get(i).getValue()/mBudgetList.get(i).getLimit();
+                float progressFloat = ((float) mBudgetList.get(i).getValue() / mBudgetList.get(i).getLimit())*100;
+                if(progressFloat > 100) {
+                    progressFloat = 100;
+                    progressBar.getProgressDrawable().setTint(getContext().getColor(R.color.red));
+                }
+                progress = progressFloat;
             } else {
                 progress = 100;
             }
-            progressBar.setProgress((int) progress);
+            progressBar.setProgress(((int) progress));
 
             budgetInsertPoint.addView(categoryItem);
         }
@@ -211,73 +296,5 @@ public class HomeFragment extends Fragment {
         budgetInsertPoint.addView(show_more);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance();
-        ArrayList<Income> income = new ArrayList<Income>();
 
-        ArrayList<Expense> expense = new ArrayList<Expense>();
-
-        DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
-
-        ValueEventListener userDataListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()){
-                    Log.w("HomeFragment", "No Children");
-                } else {
-                    for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-//                        for(int i=0;i<dataSnapshot.child(""))
-//                        for(int i=0;i<dataSnapshot.getChildrenCount();i++) {
-                            Log.i("HomeFragment", dataSnapshot.getValue().toString());
-
-                            mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().toString()));
-                            Log.i("HomeFragment", "hello");
-
-//                        }
-                    }
-                    Collections.sort(mCategoriesList, Category.categoryNameComparator);
-
-                    handleIncome();
-                    handleExpense();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("HomeFragment", "loadPost:onCancelled", error.toException());
-            }
-        };
-        userDataRef.addValueEventListener(userDataListener);
-
-        DatabaseReference userBudgetRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Budget");
-
-        ValueEventListener userBudgetListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()){
-                    Log.w("HomeFragment", "No Children");
-                } else {
-                    for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-
-                        mBudgetList.add(new Budget(dataSnapshot.child("limit").getValue().hashCode(), dataSnapshot.child("value").getValue().hashCode(),dataSnapshot.child("name").getValue().toString()));
-                        Log.i("HomeFragment", "hello");
-
-//                        }
-                    }
-                    Collections.sort(mBudgetList, Budget.budgetComparatorDesc);
-
-                    handleBudget();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("HomeFragment", "loadPost:onCancelled", error.toException());
-            }
-        };
-        userBudgetRef.addValueEventListener(userBudgetListener);
-    }
 }

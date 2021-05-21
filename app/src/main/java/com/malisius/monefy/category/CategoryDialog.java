@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -38,11 +39,13 @@ public class CategoryDialog {
 
         Button submitDialog = myDialogView.findViewById(R.id.btnYes);
         Button cancelDialog = myDialogView.findViewById(R.id.btnNo);
+        ImageView deleteDialog = myDialogView.findViewById(R.id.deleteIcon_category);
 
         TextInputLayout categoryName = myDialogView.findViewById(R.id.ticategory);
 
         if(name != null) {
             categoryName.getEditText().setText(name);
+            deleteDialog.setVisibility(View.VISIBLE);
         }
 
         final AlertDialog dialog = myDialog.create();
@@ -51,6 +54,43 @@ public class CategoryDialog {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+            }
+        });
+
+        deleteDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!categoryName.getEditText().getText().toString().isEmpty()) {
+                    DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+
+                    ValueEventListener userDataListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (!snapshot.exists()) {
+                                Log.w("CatFragment", "No Children");
+                            } else {
+                                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                    Log.i("CatFragment", dataSnapshot.child("name").getValue().toString());
+                                    if (dataSnapshot.child("name").getValue().toString().equals(name)) {
+                                        Log.i("CatFragment", "found");
+                                        String key = dataSnapshot.getKey();
+                                        DatabaseReference dataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories").child(key);
+                                        dataRef.removeValue();
+                                        mCategory.clear();
+                                        dialog.dismiss();
+                                    }
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.w("HomeFragment", "loadPost:onCancelled", error.toException());
+                        }
+                    };
+                    userDataRef.addListenerForSingleValueEvent(userDataListener);
+                }
             }
         });
 
