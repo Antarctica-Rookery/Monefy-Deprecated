@@ -50,11 +50,6 @@ public class HomeFragment extends Fragment {
         inflaterExpense = root.findViewById(R.id.inflater_expense);
         inflaterBudget = root.findViewById(R.id.inflater_budget);
 
-        tv_incomename1 = root.findViewById(R.id.tv_incomecategoryName1);
-        tv_incomename2 = root.findViewById(R.id.tv_incomecategoryName2);
-        tv_incomename3 = root.findViewById(R.id.tv_incomecategoryName3);
-        tv_incomename4 = root.findViewById(R.id.tv_incomecategoryName4);
-
         budgetCategory = getLayoutInflater().inflate(R.layout.inflater_income, inflaterBudget, false);
         expenseCategory = getLayoutInflater().inflate(R.layout.inflater_expense, inflaterExpense, false);
         incomeCategory = getLayoutInflater().inflate(R.layout.inflater_income, inflaterIncome, false);

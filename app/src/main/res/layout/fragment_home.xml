@@ -181,7 +181,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_total_budget" />
 
-                    <FrameLayout
+                    <LinearLayout
                         android:id="@+id/inflater_budget"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/progressBar">
 
-                    </FrameLayout>
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -241,7 +241,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_total_expense" />
 
-                    <FrameLayout
+                    <LinearLayout
                         android:id="@+id/inflater_expense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -251,7 +251,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/progressBar2">
 
-                    </FrameLayout>
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -302,7 +302,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_total_income" />
 
-                    <FrameLayout
+                    <LinearLayout
                         android:id="@+id/inflater_income"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -312,7 +312,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/progressBar3">
 
-                    </FrameLayout>
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
