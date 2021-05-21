@@ -32,6 +32,7 @@ import java.io.Console;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 public class RegisterActivity  extends AppCompatActivity {
@@ -40,6 +41,7 @@ public class RegisterActivity  extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private ConstraintLayout constraintLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,16 +155,23 @@ public class RegisterActivity  extends AppCompatActivity {
         DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
         DatabaseReference userBudgetRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Budget");
         ArrayList<Category> categoriesName = new ArrayList<Category>();
-        categoriesName.add(new Category("Food",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-        categoriesName.add(new Category("Shopping",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-        categoriesName.add(new Category("Housing",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-        categoriesName.add(new Category("Transportation",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-        categoriesName.add(new Category("Financial",( (int) (Math.random()*16777215)) | (0xFF << 24)));
+        ArrayList<String> names = new ArrayList<String>();
+        names.add("Food");
+        names.add("Shopping");
+        names.add("Housing");
+        names.add("Transportation");
+        names.add("Financial");
+        for(int i = 0; i < 5; i++){
+            Random obj = new Random();
+            int rand_num = obj.nextInt(0xffffff + 1);
+            String colorCode = String.format("#%06x", rand_num);
+            categoriesName.add(new Category(names.get(i),colorCode));
+        }
 
         for(Category category : categoriesName){
             String categoryKey = userDataRef.push().getKey();
             userDataRef.child(categoryKey).setValue(category);
-            userBudgetRef.child(categoryKey).setValue(new Budget(0,0));
+            userBudgetRef.child(categoryKey).setValue(new Budget(0,0, category.getName()));
         }
     }
 }
