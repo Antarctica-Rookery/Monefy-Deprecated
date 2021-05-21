@@ -54,7 +54,7 @@ public class CategoryActivity extends AppCompatActivity {
 
                 //open dialog
                 createDialog();
-
+                mCategoriesList.clear();
 //                int total_category = categories.size();
 //                int color= ((int)(Math.random()*16777215)) | (0xFF << 24);
 //                categories.add(new Category("Category " + (total_category + 1), color ));
@@ -93,7 +93,7 @@ public class CategoryActivity extends AppCompatActivity {
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                         Log.i("CategoryActivity", dataSnapshot.getValue().toString());
 
-                        mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().hashCode()));
+                        mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().toString()));
                         Log.i("CategoryActivity", "hello");
                     }
                     Collections.sort(mCategoriesList, Category.categoryNameComparator);
@@ -110,6 +110,6 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void createDialog() {
         CategoryDialog dialog = new CategoryDialog();
-        dialog.showAddDialog(this,null);
+        dialog.showAddDialog(this,null, mCategoriesList, 0);
     }
 }

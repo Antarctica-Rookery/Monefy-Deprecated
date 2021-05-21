@@ -38,9 +38,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.malisius.monefy.budget.Budget;
 import com.malisius.monefy.category.Category;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -271,36 +274,38 @@ public class MainActivity extends AppCompatActivity {
 
     private void initiateCategory() {
         DatabaseReference userDataRef = mDatabase.getReference("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
-//        ArrayList<Category> categoriesName = new ArrayList<Category>();
-        ArrayList<Income> incomes = new ArrayList<Income>();
-        ArrayList<Expense> expenses = new ArrayList<Expense>();
-        incomes.add(new Income("Uang Jajan",((int) (Math.random() *100000000))));
-        incomes.add(new Income("Dropship",((int) (Math.random() *100000000))));
-        incomes.add(new Income("Dagang Kue",((int) (Math.random() *100000000))));
-        incomes.add(new Income("Komisi gambar",((int) (Math.random() *100000000))));
+        ValueEventListener userDataListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    DatabaseReference userDataChildRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+                    DatabaseReference userBudgetRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Budget");
+                    ArrayList<Category> categoriesName = new ArrayList<Category>();
+                    ArrayList<String> names = new ArrayList<String>();
+                    names.add("Food");
+                    names.add("Shopping");
+                    names.add("Housing");
+                    names.add("Transportation");
+                    names.add("Financial");
+                    for(int i = 0; i < 5; i++){
+                        Random obj = new Random();
+                        int rand_num = obj.nextInt(0xffffff + 1);
+                        String colorCode = String.format("#%06x", rand_num);
+                        categoriesName.add(new Category(names.get(i),colorCode));
+                    }
 
-        expenses.add(new Expense("Nasi goreng NRB",((int) (Math.random() *100000000))));
-        expenses.add(new Expense("Beli tang crimping",((int) (Math.random() *100000000))));
-        expenses.add(new Expense("Sedekah ke pengemis",((int) (Math.random() *100000000))));
-        expenses.add(new Expense("Duit ilang",((int) (Math.random() *100000000))));
-//        categoriesName.add(new Category("Food",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-//        categoriesName.add(new Category("Shopping",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-//        categoriesName.add(new Category("Housing",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-//        categoriesName.add(new Category("Transportation",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-//        categoriesName.add(new Category("Financial",( (int) (Math.random()*16777215)) | (0xFF << 24)));
-//        for(Category category : categoriesName){
-//            String categoryKey = userDataRef.push().getKey();
-//            userDataRef.child(categoryKey).setValue(category);
-//        }
-
-        for(Expense expense : expenses){
-            String expenseKey = userDataRef.push().getKey();
-            userDataRef.child(expenseKey).setValue(expense);
-        }
-
-        for(Income income : incomes){
-            String incomeKey = userDataRef.push().getKey();
-            userDataRef.child(incomeKey).setValue(income);
-        }
+                    for(Category category : categoriesName){
+                        String categoryKey = userDataChildRef.push().getKey();
+                        userDataChildRef.child(categoryKey).setValue(category);
+                        userBudgetRef.child(categoryKey).setValue(new Budget(0,0, category.getName()));
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("MainActivity", "loadPost:onCancelled", error.toException());
+            }
+        };
+        userDataRef.addValueEventListener(userDataListener);
     }
 }

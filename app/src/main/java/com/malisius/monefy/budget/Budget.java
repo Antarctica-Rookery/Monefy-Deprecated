@@ -7,13 +7,15 @@ import java.util.Comparator;
 public class Budget {
     private int limit;
     private int value;
+    private String name;
 
     public Budget() {
     }
 
-    public Budget(int limit, int value) {
+    public Budget(int limit, int value, String name) {
         this.limit = limit;
         this.value = value;
+        this.name = name;
     }
 
     public int getLimit() {
@@ -30,6 +32,14 @@ public class Budget {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public static Comparator<Budget> budgetComparatorAsc = new Comparator<Budget>() {
