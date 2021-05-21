@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
     private List<Category> mCategory;
+    private Context context;
 
     public CategoryListAdapter(List<Category> category){
         mCategory = category;
@@ -23,7 +25,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
@@ -45,6 +47,14 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
         View view_color = holder.categoryColor;
         view_color.setBackgroundColor(0xff000000 + Integer.parseInt(Integer.toHexString(category.getColor()),16));
+
+        holder.ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CategoryDialog dialog = new CategoryDialog();
+                dialog.showAddDialog(context, category.getName());
+            }
+        });
     }
 
     @Override
@@ -55,10 +65,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public class CategoryViewHolder extends RecyclerView.ViewHolder{
         public TextView categoryName;
         public View categoryColor;
+        public LinearLayout ll;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            ll = itemView.findViewById(R.id.ll);
             categoryName = itemView.findViewById(R.id.tv_categoryName);
             categoryColor = itemView.findViewById(R.id.view_categoryColor);
         }
