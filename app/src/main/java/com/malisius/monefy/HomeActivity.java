@@ -46,6 +46,7 @@ public class HomeActivity extends AppCompatActivity {
 //            mDatabase.getReference().child(mAuth.getUid()).child(key).setValue(cat);
 //        }
 
+        //clicking the same navigation bar item won't reopen the fragment
         navView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
