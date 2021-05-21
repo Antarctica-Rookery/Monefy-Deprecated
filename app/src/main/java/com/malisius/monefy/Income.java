@@ -1,16 +1,20 @@
 package com.malisius.monefy;
 
+import java.util.Date;
+
 public class Income {
 
     private String name;
     private int value;
+    private Date date;
 
     public Income() {
     }
 
-    public Income(String name, int value) {
+    public Income(String name, int value,Date date) {
         this.name = name;
         this.value = value;
+        this.date = date;
     }
 
     public String getName() {
@@ -28,4 +32,7 @@ public class Income {
     public void setValue(int value) {
         this.value = value;
     }
+
+    public Date getDate() {return date;};
+
 }

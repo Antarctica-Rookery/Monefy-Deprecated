@@ -104,37 +104,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="42dp">
-
-            <ImageView
-                android:id="@+id/notif_logo"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/ic_baseline_notifications_24" />
-
-            <TextView
-                android:id="@+id/tvnotif"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="24dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/robotocondensed_regular"
-                android:text="Notifications"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="18sp" />
-
-            <Switch
-                android:id="@+id/switch1"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:background="@null" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/categories"
