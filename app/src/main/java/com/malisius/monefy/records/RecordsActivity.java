@@ -81,6 +81,7 @@ public class RecordsActivity extends AppCompatActivity {
                 if(!snapshot.exists()){
                     Log.w("HomeFragment", "No Children");
                 } else {
+                    category = null;
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                         if(dataSnapshot.child("name").getValue().toString().equals(name)){
                             Log.w("HomeFragment", "Found");

@@ -21,6 +21,12 @@ public class Income {
         return name;
     }
 
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+
+
     public void setName(String name) {
         this.name = name;
     }

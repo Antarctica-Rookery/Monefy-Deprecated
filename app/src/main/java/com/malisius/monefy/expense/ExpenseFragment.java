@@ -62,7 +62,7 @@ public class ExpenseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 RecordDialog dialog = new RecordDialog();
-                dialog.showDialog(getContext(),false, false, null);
+                dialog.showDialog(getContext(),false, false, null, 0);
             }
         });
 

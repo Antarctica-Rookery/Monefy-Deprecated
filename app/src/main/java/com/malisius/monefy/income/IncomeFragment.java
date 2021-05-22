@@ -63,7 +63,7 @@ public class IncomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 RecordDialog dialog = new RecordDialog();
-                dialog.showDialog(getContext(), false, true, null);
+                dialog.showDialog(getContext(), false, true, null, 0);
             }
         });
 
@@ -80,6 +80,8 @@ public class IncomeFragment extends Fragment {
                 if (!snapshot.exists()) {
                     Log.w("IncomeFragment", "No Child Exist");
                 } else {
+                    mCategoriesList.clear();
+                    sections.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Log.i("IncomeFragment", dataSnapshot.getValue().toString());
                         mCategoriesList.add(dataSnapshot.getValue(Category.class));
@@ -118,7 +120,7 @@ public class IncomeFragment extends Fragment {
 
             }
         };
-        userDataRef.addListenerForSingleValueEvent(userDataListener);
+        userDataRef.addValueEventListener(userDataListener);
 
         return root;
     }

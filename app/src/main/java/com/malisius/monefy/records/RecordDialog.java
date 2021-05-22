@@ -26,10 +26,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.malisius.monefy.Income;
 import com.malisius.monefy.R;
 import com.malisius.monefy.category.Category;
 import com.malisius.monefy.expense.Expense;
+import com.malisius.monefy.income.Income;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,10 +41,11 @@ public class RecordDialog {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private ArrayList<String> mCategoriesList = new ArrayList<String>();
+    private Category getCat;
     private Date selectedDate;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void showDialog(Context context, Boolean isEdit, Boolean isIncome, String categoryName){
+    public void showDialog(Context context, Boolean isEdit, Boolean isIncome, String categoryName, int position){
         AlertDialog.Builder myDialog = new AlertDialog.Builder(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View myDialogView = inflater.inflate(R.layout.dialog_edit_record, null);
@@ -86,6 +87,7 @@ public class RecordDialog {
 
         // Handle Dropdown Categories //
         AutoCompleteTextView categoriesName = myDialogView.findViewById(R.id.categoryName);
+        categoriesName.setText(categoryName);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
@@ -98,6 +100,22 @@ public class RecordDialog {
                 } else {
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                         mCategoriesList.add(dataSnapshot.getValue(Category.class).getName());
+                        if(dataSnapshot.child("name").getValue().toString().equals(categoryName)){
+                            getCat = dataSnapshot.getValue(Category.class);
+                            if(isEdit){
+                                if(isIncome) {
+                                    ArrayList<Income> placeIncome = getCat.getIncomes();
+                                    TILAmount.getEditText().setText(String.valueOf(placeIncome.get(position).getValue()));
+                                    TILName.getEditText().setText(placeIncome.get(position).getName());
+                                    selectedDate = new Date(placeIncome.get(position).getDate());
+                                } else {
+                                    ArrayList<Expense> placeExpense = getCat.getExpenses();
+                                    TILAmount.getEditText().setText(String.valueOf(placeExpense.get(position).getValue()));
+                                    TILName.getEditText().setText(placeExpense.get(position).getName());
+                                    selectedDate = new Date(placeExpense.get(position).getDate());
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -142,6 +160,44 @@ public class RecordDialog {
         deleteDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatabaseReference userCatRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+                ValueEventListener userCatListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(!snapshot.exists()){
+                            Log.w("ExpenseFragment", "No Child Exist");
+                        } else {
+                            for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                                if(dataSnapshot.child("name").getValue().equals(categoriesName.getText().toString())){
+                                    String key = dataSnapshot.getKey();
+                                    Category category = dataSnapshot.getValue(Category.class);
+                                    if(isIncome){
+                                        ArrayList<Income> incomes = category.getIncomes();
+                                        incomes.remove(position);
+                                        category.setIncomes(incomes);
+                                        DatabaseReference userIncomeRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+                                        userIncomeRef.child(key).setValue(category);
+                                        dialog.dismiss();
+                                    } else {
+                                        ArrayList<Expense> expenses = category.getExpenses();
+                                        expenses.remove(position);
+                                        category.setExpenses(expenses);
+                                        DatabaseReference userIncomeRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+                                        userIncomeRef.child(key).setValue(category);
+                                        dialog.dismiss();
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                };
+                userCatRef.addListenerForSingleValueEvent(userCatListener);
                 dialog.dismiss();
             }
         });
@@ -172,7 +228,13 @@ public class RecordDialog {
                                             if(incomes == null){
                                                 incomes = new ArrayList<Income>();
                                             }
-                                            incomes.add(income);
+                                            if(isEdit){
+                                                incomes.get(position).setValue(value);
+                                                incomes.get(position).setName(TILName.getEditText().getText().toString());
+                                                incomes.get(position).setDate(selectedDate.getTime());
+                                            }else {
+                                                incomes.add(income);
+                                            }
                                             category.setIncomes(incomes);
                                             DatabaseReference userIncomeRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
                                             userIncomeRef.child(key).setValue(category);
@@ -184,7 +246,13 @@ public class RecordDialog {
                                             if(expenses == null){
                                                 expenses = new ArrayList<Expense>();
                                             }
-                                            expenses.add(expense);
+                                            if(isEdit){
+                                                expenses.get(position).setValue(value);
+                                                expenses.get(position).setName(TILName.getEditText().getText().toString());
+                                                expenses.get(position).setDate(selectedDate.getTime());
+                                            } else {
+                                                expenses.add(expense);
+                                            }
                                             category.setExpenses(expenses);
                                             DatabaseReference userIncomeRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
                                             userIncomeRef.child(key).setValue(category);
