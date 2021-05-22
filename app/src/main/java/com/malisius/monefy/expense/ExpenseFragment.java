@@ -27,6 +27,7 @@ import com.malisius.monefy.R;
 import com.malisius.monefy.budget.Budget;
 import com.malisius.monefy.category.Category;
 import com.malisius.monefy.category.CategoryListAdapter;
+import com.malisius.monefy.records.RecordDialog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,13 +51,17 @@ public class ExpenseFragment extends Fragment {
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_expense, container, false);
         ConstraintLayout rootParent = (ConstraintLayout) container.getParent();
+
+        // Fab controller
         fabButton = rootParent.findViewById(R.id.floatingActionButton);
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("ExpenseFragment", "fabButton pressed");
+                RecordDialog dialog = new RecordDialog();
+                dialog.showDialog(getContext(),false, false, null);
             }
         });
+
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
         donutProgressView = root.findViewById(R.id.donut_view);

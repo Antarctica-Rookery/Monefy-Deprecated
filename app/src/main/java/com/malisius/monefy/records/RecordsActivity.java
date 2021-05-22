@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +40,7 @@ public class RecordsActivity extends AppCompatActivity {
     private String key;
     private RecyclerView recyclerView;
     private TextView tvStartDate, tvEndDate, tvNoRecords, tvCategoryName;
+    private ImageView backBtn;
     private Button btnStartDate, btnEndDate;
     private ArrayList<Income> mIncome = new ArrayList<Income>();
     private ArrayList<Expense> mExpense = new ArrayList<Expense>();
@@ -64,6 +66,15 @@ public class RecordsActivity extends AppCompatActivity {
         startDatePicker = new DatePicker(this);
         endDatePicker = new DatePicker(this);
         tvCategoryName.setText(name);
+
+        backBtn = findViewById(R.id.back);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         ValueEventListener catDataListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -158,7 +169,6 @@ public class RecordsActivity extends AppCompatActivity {
                 startDatePickerDialog.show();
             }
         });
-
     }
 
     private ArrayList<Expense> filterDataExpenseStart(ArrayList<Expense> mExpense, Calendar cal){
