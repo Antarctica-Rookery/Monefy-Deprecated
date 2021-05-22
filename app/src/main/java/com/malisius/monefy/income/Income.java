@@ -6,12 +6,12 @@ public class Income {
 
     private String name;
     private int value;
-    private Date date;
+    private long date;
 
     public Income() {
     }
 
-    public Income(String name, int value,Date date) {
+    public Income(String name, int value,long date) {
         this.name = name;
         this.value = value;
         this.date = date;
@@ -20,6 +20,12 @@ public class Income {
     public String getName() {
         return name;
     }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+
 
     public void setName(String name) {
         this.name = name;
@@ -33,6 +39,6 @@ public class Income {
         this.value = value;
     }
 
-    public Date getDate() {return date;};
+    public long getDate() {return date;};
 
 }

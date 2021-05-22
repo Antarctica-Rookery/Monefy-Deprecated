@@ -1,12 +1,16 @@
 package com.malisius.monefy.records;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.malisius.monefy.expense.Expense;
@@ -14,11 +18,14 @@ import com.malisius.monefy.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.ExpenseViewHolder> {
     private ArrayList<Expense> mExpense = new ArrayList<Expense>();
     private Context context;
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yy");
+    private TextView viewTitle;
+    private String categoryName;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
 
     public ExpenseListAdapter(ArrayList<Expense> expense){
         mExpense = expense;
@@ -30,6 +37,10 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
+        ConstraintLayout constraintLayout = (ConstraintLayout) parent.getParent();
+        viewTitle = constraintLayout.findViewById(R.id.viewTitle);
+
+        categoryName = viewTitle.getText().toString();
         // Inflate the custom layout
         View incomeView = inflater.inflate(R.layout.record_item_layout, parent, false);
 
@@ -48,11 +59,22 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         recordName.setText(expense.getName());
 
         TextView recordValue = holder.recordValue;
-        recordValue.setText(expense.getValue());
+        recordValue.setText(String.valueOf(expense.getValue()));
 
         TextView recordDate = holder.recordDate;
-        String date = sdf.format(expense.getDate());
+        Date expenseDate =  new Date(expense.getDate());
+        String date = sdf.format(expenseDate);
         recordDate.setText(date);
+
+        LinearLayout ll = holder.ll;
+        ll.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                RecordDialog dialog = new RecordDialog();
+                dialog.showDialog(context,true, false, categoryName, position);
+            }
+        });
 
 
     }
@@ -64,6 +86,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
 
     public class ExpenseViewHolder extends RecyclerView.ViewHolder{
         public TextView recordName, recordValue, recordDate;
+        public LinearLayout ll;
 
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,7 +94,7 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
             recordName = itemView.findViewById(R.id.tv_recordName);
             recordValue = itemView.findViewById(R.id.record_value);
             recordDate = itemView.findViewById(R.id.record_date);
-
+            ll = itemView.findViewById(R.id.ll);
         }
     }
 }

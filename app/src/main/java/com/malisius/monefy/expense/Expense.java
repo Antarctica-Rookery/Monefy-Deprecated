@@ -6,13 +6,13 @@ public class Expense {
 
     private String name;
     private int value;
-    private Date date;
+    private long date;
 
 
     public Expense() {
     }
 
-    public Expense(String name, int value, Date date) {
+    public Expense(String name, int value, long date) {
         this.name = name;
         this.value = value;
         this.date = date;
@@ -34,11 +34,11 @@ public class Expense {
         this.value = value;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 }

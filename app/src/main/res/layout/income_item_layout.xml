@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/income_category_total"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
