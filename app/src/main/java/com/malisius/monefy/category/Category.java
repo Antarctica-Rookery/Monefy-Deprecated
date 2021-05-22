@@ -1,8 +1,6 @@
 package com.malisius.monefy.category;
 
-import android.graphics.Color;
-
-import com.malisius.monefy.Expense;
+import com.malisius.monefy.expense.Expense;
 import com.malisius.monefy.Income;
 
 import java.util.ArrayList;

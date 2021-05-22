@@ -97,6 +97,9 @@ public class CategoryActivity extends AppCompatActivity {
                         Log.i("CategoryActivity", "hello");
                     }
                     Collections.sort(mCategoriesList, Category.categoryNameComparator);
+                    CategoryListAdapter adapter = new CategoryListAdapter(mCategoriesList);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(CategoryActivity.this));
                 }
             }
 

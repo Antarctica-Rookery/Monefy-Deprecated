@@ -76,6 +76,8 @@ public class CategoryDialog {
                                         String key = dataSnapshot.getKey();
                                         DatabaseReference dataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories").child(key);
                                         dataRef.removeValue();
+                                        DatabaseReference budgetRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Budget").child(key);
+                                        budgetRef.removeValue();
                                         mCategory.clear();
                                         dialog.dismiss();
                                     }
@@ -101,11 +103,12 @@ public class CategoryDialog {
                     Random obj = new Random();
                     int rand_num = obj.nextInt(0xffffff + 1);
                     String colorCode = String.format("#%06x", rand_num);
-                    mCategory.add(new Category(categoryName.getEditText().getText().toString(), colorCode));
+//                    mCategory.add(new Category(categoryName.getEditText().getText().toString(), colorCode));
+                    Category newCategory = new Category(categoryName.getEditText().getText().toString(), colorCode);
                     DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
                     DatabaseReference userBudgetRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Budget");
                     String categoryKey = userDataRef.push().getKey();
-                    userDataRef.child(categoryKey).setValue(mCategory.get(mCategory.size() - 1));
+                    userDataRef.child(categoryKey).setValue(newCategory);
                     userBudgetRef.child(categoryKey).setValue(new Budget(0,0, categoryName.getEditText().getText().toString()));
                     mCategory.clear();
                     dialog.dismiss();
@@ -140,12 +143,11 @@ public class CategoryDialog {
                                 Log.w("HomeFragment", "loadPost:onCancelled", error.toException());
                             }
                         };
-                        userDataRef.addValueEventListener(userDataListener);
+                        userDataRef.addListenerForSingleValueEvent(userDataListener);
                     }
                 }
             }
         });
-
         dialog.show();
     }
 
