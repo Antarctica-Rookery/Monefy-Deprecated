@@ -3,64 +3,72 @@ package com.malisius.monefy.income;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.malisius.monefy.Income;
 import com.malisius.monefy.R;
 import com.malisius.monefy.category.Category;
 import com.malisius.monefy.records.RecordsActivity;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
-public class IncomeFragmentAdapter extends RecyclerView.Adapter<IncomeFragmentAdapter.IncomeFragViewHolder> {
+public class IncomeFragmentAdapter extends RecyclerView.Adapter<com.malisius.monefy.income.IncomeFragmentAdapter.IncomeFragViewHolder> {
+    private ArrayList<Category> mCategories = new ArrayList<Category>();
+    private Context context;
 
-    private final ArrayList<Category> categories;
-    private LayoutInflater mInflater;
-
-    IncomeFragmentAdapter(Context context, ArrayList<Category> mCategoriesList) {
-        mInflater = LayoutInflater.from(context);
-        categories = mCategoriesList;
+    public IncomeFragmentAdapter(ArrayList<Category> categories){
+        mCategories = categories;
     }
 
     @NonNull
     @Override
     public IncomeFragmentAdapter.IncomeFragViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View mItemView = mInflater.inflate(R.layout.income_item_layout,
-                parent, false);
-        return new IncomeFragViewHolder(mItemView, this);
+        context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        // Inflate the custom layout
+        View incomeView = inflater.inflate(R.layout.income_item_layout, parent, false);
+
+        // Return a new holder instance
+        IncomeFragmentAdapter.IncomeFragViewHolder viewHolder = new IncomeFragmentAdapter.IncomeFragViewHolder(incomeView);
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull IncomeFragmentAdapter.IncomeFragViewHolder holder, int position) {
-        Category title = categories.get(position);
+        // Get the data model based on position
+        Category category = mCategories.get(position);
 
-        TextView IncomeItemView = holder.IncomeItemView;
-        IncomeItemView.setText(title.getName());
+        // Set item views based on your views and data model
+        TextView incomeName = holder.incomeName;
+        incomeName.setText(category.getName());
+
+        TextView incomeValue = holder.incomeValue;
+        incomeValue.setText(category.getTotalIncome());
+
+
     }
 
     @Override
     public int getItemCount() {
-        return categories.size();
+        return mCategories.size();
     }
 
-    public class IncomeFragViewHolder extends RecyclerView.ViewHolder {
-        public final TextView IncomeItemView;
-        final ListAdapter iAdapter;
+    public class IncomeFragViewHolder extends RecyclerView.ViewHolder{
+        public TextView incomeName,incomeValue;
 
-        public IncomeFragViewHolder(@NonNull View itemView, ListAdapter incomeAdapter) {
+        public IncomeFragViewHolder(@NonNull View itemView) {
             super(itemView);
-            IncomeItemView = itemView.findViewById(R.id.tv_incomecategoryName);
-            this.iAdapter = incomeAdapter;
+
+            incomeName = itemView.findViewById(R.id.tv_incomecategoryName);
+            incomeValue = itemView.findViewById(R.id.income_category_total);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -68,8 +76,10 @@ public class IncomeFragmentAdapter extends RecyclerView.Adapter<IncomeFragmentAd
 
                     Context context = itemView.getContext();
 
+
+
                     Bundle bundle = new Bundle();
-                    bundle.putString("name", categories.get(position).getName());
+                    bundle.putString("name", mCategories.get(position).getName());
                     bundle.putString("type", "expense");
 
                     Intent recordsIntent = new Intent(context, RecordsActivity.class);
@@ -77,6 +87,7 @@ public class IncomeFragmentAdapter extends RecyclerView.Adapter<IncomeFragmentAd
                     context.startActivity(recordsIntent);
                 }
             });
+
         }
     }
 }

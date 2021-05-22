@@ -36,7 +36,7 @@ public class IncomeFragment extends Fragment {
     private ArrayList<Category> mCategoriesList = new ArrayList<Category>();
     private ArrayList<DonutSection> sections = new ArrayList<>();
     private RecyclerView rv_frag_income;
-    private ListAdapter incomeAdapter;
+    private IncomeFragmentAdapter incomeAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +54,11 @@ public class IncomeFragment extends Fragment {
         donutProgressView.setCap(3.0f);
         donutProgressView.submitData(sections);
 
+        incomeAdapter = new IncomeFragmentAdapter(mCategoriesList);
+        rv_frag_income.setAdapter(incomeAdapter);
+        rv_frag_income.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
         return root;
     }
 
@@ -67,19 +72,15 @@ public class IncomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(!snapshot.exists()){
-                    Log.w("ExpenseFragment", "No Child Exist");
+                    Log.w("IncomeFragment", "No Child Exist");
                 } else {
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                        Log.i("ExpenseFragment", dataSnapshot.getValue().toString());
+                        Log.i("IncomeFragment", dataSnapshot.getValue().toString());
                         mCategoriesList.add(dataSnapshot.getValue(Category.class));
-                        Log.i("ExpenseFragment", "hello");
-
-                        incomeAdapter = new IncomeFragmentAdapter(IncomeFragment.this, mCategoriesList);
-                        rv_frag_income.setAdapter(incomeAdapter);
-                        rv_frag_income.setLayoutManager(new LinearLayoutManager(this));
-
+                        Log.i("IncomeFragment", "hello");
                     }
                 }
+
             }
 
             @Override
@@ -87,6 +88,9 @@ public class IncomeFragment extends Fragment {
 
             }
         };
+
+
+
         userDataRef.addValueEventListener(userDataListener);
     }
 }
