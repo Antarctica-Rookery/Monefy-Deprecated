@@ -1,20 +1,16 @@
 package com.malisius.monefy.records;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.malisius.monefy.Income;
+import com.malisius.monefy.income.Income;
 import com.malisius.monefy.R;
-import com.malisius.monefy.category.Category;
-import com.malisius.monefy.category.CategoryDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

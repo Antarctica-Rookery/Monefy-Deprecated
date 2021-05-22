@@ -70,9 +70,9 @@ public class IncomeFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
         donutProgressView = root.findViewById(R.id.donut_view);
-        donutColor.add("#ffab91");
-        donutColor.add("#ff8a65");
-        donutColor.add("#ff7043");
+        donutColor.add("#aed581");
+        donutColor.add("#8bc34a");
+        donutColor.add("#689f38");
         DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
         ValueEventListener userDataListener = new ValueEventListener() {
             @Override

@@ -25,7 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.malisius.monefy.expense.Expense;
-import com.malisius.monefy.Income;
+import com.malisius.monefy.income.Income;
 import com.malisius.monefy.R;
 import com.malisius.monefy.records.RecordsActivity;
 import com.malisius.monefy.budget.Budget;
