@@ -6,6 +6,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +35,8 @@ public class IncomeFragment extends Fragment {
     private FirebaseDatabase mDatabase;
     private ArrayList<Category> mCategoriesList = new ArrayList<Category>();
     private ArrayList<DonutSection> sections = new ArrayList<>();
+    private RecyclerView rv_frag_income;
+    private ListAdapter incomeAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +46,7 @@ public class IncomeFragment extends Fragment {
 
         //using donut progress
         donutProgressView = root.findViewById(R.id.donut_view);
+        rv_frag_income = root.findViewById(R.id.rv_frag_income);
 
         sections.add(new DonutSection("Category 1", Color.parseColor("#64b5f6"), 1.9f));
         sections.add(new DonutSection("Category 2", Color.parseColor("#2196f3"), 0.5f));
@@ -67,6 +73,11 @@ public class IncomeFragment extends Fragment {
                         Log.i("ExpenseFragment", dataSnapshot.getValue().toString());
                         mCategoriesList.add(dataSnapshot.getValue(Category.class));
                         Log.i("ExpenseFragment", "hello");
+
+                        incomeAdapter = new IncomeFragmentAdapter(IncomeFragment.this, mCategoriesList);
+                        rv_frag_income.setAdapter(incomeAdapter);
+                        rv_frag_income.setLayoutManager(new LinearLayoutManager(this));
+
                     }
                 }
             }

@@ -56,12 +56,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_home, container, false);
 
-<<<<<<< HEAD
-        View root =  inflater.inflate(R.layout.fragment_home, container, false);
-        inflaterIncome = root.findViewById(R.id.inflater_income);
-        inflaterExpense = root.findViewById(R.id.inflater_expense);
-        inflaterBudget = root.findViewById(R.id.inflater_budget);
-=======
+
         handleTotal(root);
 
         //get insert point for category item
@@ -70,7 +65,6 @@ public class HomeFragment extends Fragment {
         expenseInsertPoint = root.findViewById(R.id.inflater_expense);
 
         budgetInsertPoint = root.findViewById(R.id.inflater_budget);
->>>>>>> ea02bd86de5fd7a15e4dda3f742790c9f8e7c256
 
 
         return root;
