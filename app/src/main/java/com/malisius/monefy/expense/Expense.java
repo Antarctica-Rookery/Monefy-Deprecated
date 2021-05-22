@@ -1,4 +1,4 @@
-package com.malisius.monefy;
+package com.malisius.monefy.expense;
 
 import java.util.Date;
 

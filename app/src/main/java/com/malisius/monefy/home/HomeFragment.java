@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -25,7 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.malisius.monefy.Expense;
+import com.malisius.monefy.expense.Expense;
 import com.malisius.monefy.Income;
 import com.malisius.monefy.R;
 import com.malisius.monefy.records.RecordsActivity;
@@ -86,7 +85,10 @@ public class HomeFragment extends Fragment {
                     else {
                         categories_size = mCategoriesList.size();
                     }
-
+                    LinearLayout cardViewIncome = rootView.findViewById(R.id.inflater_income);
+                    cardViewIncome.removeAllViews();
+                    LinearLayout cardViewExpense = rootView.findViewById(R.id.inflater_expense);
+                    cardViewExpense.removeAllViews();
                     handleIncome();
                     handleExpense();
                     handleTotal(rootView);
@@ -99,7 +101,7 @@ public class HomeFragment extends Fragment {
                 Log.w("HomeFragment", "loadPost:onCancelled", error.toException());
             }
         };
-        userDataRef.addValueEventListener(userDataListener);
+        userDataRef.addListenerForSingleValueEvent(userDataListener);
 
         DatabaseReference userBudgetRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Budget");
 
@@ -122,6 +124,8 @@ public class HomeFragment extends Fragment {
                     else {
                         budget_size = mBudgetList.size();
                     }
+                    LinearLayout cardViewBudget = rootView.findViewById(R.id.inflater_budget);
+                    cardViewBudget.removeAllViews();
                     handleBudget();
                     handleTotal(rootView);
                 }
@@ -132,7 +136,7 @@ public class HomeFragment extends Fragment {
                 Log.w("HomeFragment", "loadPost:onCancelled", error.toException());
             }
         };
-        userBudgetRef.addValueEventListener(userBudgetListener);
+        userBudgetRef.addListenerForSingleValueEvent(userBudgetListener);
 
         rootView = root;
 
@@ -148,6 +152,7 @@ public class HomeFragment extends Fragment {
         return root;
 
     }
+
 
     private String formatRupiah(int number){
         Locale localeID = new Locale("in", "ID");

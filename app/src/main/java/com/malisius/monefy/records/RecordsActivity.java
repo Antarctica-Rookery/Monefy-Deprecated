@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,11 +21,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.malisius.monefy.Expense;
+import com.malisius.monefy.expense.Expense;
 import com.malisius.monefy.Income;
 import com.malisius.monefy.R;
 import com.malisius.monefy.category.Category;
-import com.malisius.monefy.category.CategoryListAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +38,7 @@ public class RecordsActivity extends AppCompatActivity {
     private Category category;
     private String key;
     private RecyclerView recyclerView;
-    private TextView tvStartDate, tvEndDate, tvNoRecords;
+    private TextView tvStartDate, tvEndDate, tvNoRecords, tvCategoryName;
     private Button btnStartDate, btnEndDate;
     private ArrayList<Income> mIncome = new ArrayList<Income>();
     private ArrayList<Expense> mExpense = new ArrayList<Expense>();
@@ -60,11 +57,13 @@ public class RecordsActivity extends AppCompatActivity {
         tvStartDate = findViewById(R.id.tv_start_date);
         tvEndDate = findViewById(R.id.tv_end_date);
         tvNoRecords = findViewById(R.id.tv_no_record);
+        tvCategoryName = findViewById(R.id.viewTitle);
         recyclerView = findViewById(R.id.recyclerView_records);
         btnStartDate = findViewById(R.id.button_start_date);
         btnEndDate = findViewById(R.id.button_end_date);
         startDatePicker = new DatePicker(this);
         endDatePicker = new DatePicker(this);
+        tvCategoryName.setText(name);
         ValueEventListener catDataListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -101,6 +100,20 @@ public class RecordsActivity extends AppCompatActivity {
                     tvEndDate.setText(date);
                 }
                 endDatePicker.updateDate(year, month, dayOfMonth);
+                if(type.equals("income")){
+                    ArrayList<Income> newIncomeList = new ArrayList<Income>();
+                    newIncomeList = filterDataIncomeStart(mIncome, cal);
+                    IncomeListAdapter adapter = new IncomeListAdapter(newIncomeList);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                } else {
+                    ArrayList<Expense> newExpenseList = new ArrayList<Expense>();
+                    newExpenseList = filterDataExpenseStart(mExpense, cal);
+                    ExpenseListAdapter adapter = new ExpenseListAdapter(newExpenseList);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                }
+
             }
         });
 
@@ -116,6 +129,19 @@ public class RecordsActivity extends AppCompatActivity {
                     tvEndDate.setText(date);
                 }
                 endDatePicker.updateDate(year, month, dayOfMonth);
+                if(type.equals("income")){
+                    ArrayList<Income> newIncomeList = new ArrayList<Income>();
+                    newIncomeList = filterDataIncomeEnd(mIncome, cal);
+                    IncomeListAdapter adapter = new IncomeListAdapter(newIncomeList);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                } else {
+                    ArrayList<Expense> newExpenseList = new ArrayList<Expense>();
+                    newExpenseList = filterDataExpenseEnd(mExpense, cal);
+                    ExpenseListAdapter adapter = new ExpenseListAdapter(newExpenseList);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                }
             }
         });
 
@@ -133,6 +159,48 @@ public class RecordsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private ArrayList<Expense> filterDataExpenseStart(ArrayList<Expense> mExpense, Calendar cal){
+        ArrayList<Expense> newExpenseList= new ArrayList<Expense>();
+        for(Expense expense: mExpense){
+            if(expense.getDate().after(cal.getTime())){
+                newExpenseList.add(expense);
+            }
+        }
+        return newExpenseList;
+    }
+
+    private ArrayList<Expense> filterDataExpenseEnd(ArrayList<Expense> mExpense, Calendar cal){
+        ArrayList<Expense> newExpenseList= new ArrayList<Expense>();
+        for(Expense expense: mExpense){
+            if(expense.getDate().before(cal.getTime())){
+                newExpenseList.add(expense);
+            }
+        }
+        return newExpenseList;
+
+    }
+
+    private ArrayList<Income> filterDataIncomeStart(ArrayList<Income> mIncome, Calendar cal){
+        ArrayList<Income> newIncomeList= new ArrayList<Income>();
+        for(Income income: mIncome){
+            if(income.getDate().after(cal.getTime())){
+                newIncomeList.add(income);
+            }
+        }
+        return newIncomeList;
+    }
+
+
+    private ArrayList<Income> filterDataIncomeEnd(ArrayList<Income> mIncome, Calendar cal){
+        ArrayList<Income> newIncomeList= new ArrayList<Income>();
+        for(Income income: mIncome){
+            if(income.getDate().before(cal.getTime())){
+                newIncomeList.add(income);
+            }
+        }
+        return newIncomeList;
     }
 
 
