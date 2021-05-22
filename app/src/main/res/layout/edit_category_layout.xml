@@ -54,12 +54,12 @@
 
     <Button
         android:id="@+id/btnYes"
-        android:layout_width="60dp"
-        android:layout_height="45dp"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Yes"
+        android:text="Update"
         android:textSize="10sp"
         android:theme="@style/ButtonPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,12 +68,12 @@
 
     <Button
         android:id="@+id/btnNo"
-        android:layout_width="60dp"
-        android:layout_height="45dp"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
-        android:text="No"
+        android:text="Cancel"
 
         android:textSize="10sp"
         android:theme="@style/ButtonSecondary"
