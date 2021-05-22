@@ -221,6 +221,9 @@ public class RecordsActivity extends AppCompatActivity {
                 Date startDate = new Date(longStartDate);
                 long longEndDate= mIncome.get(mIncome.size() - 1).getDate();
                 Date endDate = new Date(longEndDate);
+                if(endDate.before(new Date())){
+                    endDate = new Date();
+                }
                 tvStartDate.setText(sdf.format(startDate));
                 tvEndDate.setText(sdf.format(endDate));
                 IncomeListAdapter adapter = new IncomeListAdapter(category.getIncomes());
@@ -239,6 +242,9 @@ public class RecordsActivity extends AppCompatActivity {
                 Date startDate = new Date(longStartDate);
                 long longEndDate =  mExpense.get(mExpense.size() - 1).getDate();
                 Date endDate = new Date(longEndDate);
+                if(endDate.before(new Date())){
+                    endDate = new Date();
+                }
                 tvStartDate.setText(sdf.format(startDate));
                 tvEndDate.setText(sdf.format(endDate));
                 ExpenseListAdapter adapter = new ExpenseListAdapter(category.getExpenses());
