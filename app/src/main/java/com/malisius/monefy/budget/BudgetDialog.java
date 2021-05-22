@@ -18,8 +18,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.malisius.monefy.R;
+import com.malisius.monefy.category.Category;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BudgetDialog {
     public void showAddDialog(Context context, String status, ArrayList<Budget> mBudget, Budget oldBudget){
