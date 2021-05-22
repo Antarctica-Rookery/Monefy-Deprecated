@@ -66,7 +66,7 @@ public class RecordDialog {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar calendar = new Calendar.Builder().setDate(year, month, dayOfMonth).build();
+                Calendar calendar = new Calendar.Builder().setDate(year, month, dayOfMonth).setTimeOfDay(12,00,00).build();
                 if(!calendar.getTime().after(new Date())){
 
                     String date = sdf.format(calendar.getTime());
@@ -219,6 +219,9 @@ public class RecordDialog {
                                         String key = dataSnapshot.getKey();
                                         Category category = dataSnapshot.getValue(Category.class);
                                         if (selectedDate == null){
+                                            selectedDate = new Date();
+                                        }
+                                        if(selectedDate.after(new Date())){
                                             selectedDate = new Date();
                                         }
                                         if(isIncome){
