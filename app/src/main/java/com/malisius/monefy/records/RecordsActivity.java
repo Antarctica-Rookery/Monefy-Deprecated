@@ -85,7 +85,7 @@ public class RecordsActivity extends AppCompatActivity {
                         if(dataSnapshot.child("name").getValue().toString().equals(name)){
                             Log.w("HomeFragment", "Found");
                             key = dataSnapshot.getKey();
-                            category = new Category(dataSnapshot.child("name").getValue().toString(), dataSnapshot.child("color").getValue().toString());
+                            category = dataSnapshot.getValue(Category.class);
                             setData(type);
                         }
                     }
@@ -110,10 +110,12 @@ public class RecordsActivity extends AppCompatActivity {
                     tvStartDate.setText(date);
                 }
                 startDatePicker.updateDate(year, month, dayOfMonth);
+                Log.i("enddate", String.valueOf(endDatePicker.getYear()));
+                Calendar endCal = new Calendar.Builder().setDate(endDatePicker.getYear(), endDatePicker.getMonth(), endDatePicker.getDayOfMonth()).build();
                 if(type.equals("income")){
-                    if(mExpense != null) {
+                    if(mIncome != null) {
                         ArrayList<Income> newIncomeList = new ArrayList<Income>();
-                        newIncomeList = filterDataIncomeStart(mIncome, cal);
+                        newIncomeList = filterDataIncome(mIncome, cal, endCal);
                         IncomeListAdapter adapter = new IncomeListAdapter(newIncomeList);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
@@ -121,7 +123,7 @@ public class RecordsActivity extends AppCompatActivity {
                 } else {
                     if(mExpense != null) {
                         ArrayList<Expense> newExpenseList = new ArrayList<Expense>();
-                        newExpenseList = filterDataExpenseStart(mExpense, cal);
+                        newExpenseList = filterDataExpense(mExpense, cal, endCal);
                         ExpenseListAdapter adapter = new ExpenseListAdapter(newExpenseList);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
@@ -142,10 +144,11 @@ public class RecordsActivity extends AppCompatActivity {
                     tvEndDate.setText(date);
                 }
                 endDatePicker.updateDate(year, month, dayOfMonth);
+                Calendar startCal = new Calendar.Builder().setDate(startDatePicker.getYear(), startDatePicker.getMonth(), startDatePicker.getDayOfMonth()).build();
                 if(type.equals("income")){
                     if(mIncome != null) {
                         ArrayList<Income> newIncomeList = new ArrayList<Income>();
-                        newIncomeList = filterDataIncomeEnd(mIncome, cal);
+                        newIncomeList = filterDataIncome(mIncome, startCal, cal);
                         IncomeListAdapter adapter = new IncomeListAdapter(newIncomeList);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
@@ -153,7 +156,7 @@ public class RecordsActivity extends AppCompatActivity {
                 } else {
                     if(mExpense != null) {
                         ArrayList<Expense> newExpenseList = new ArrayList<Expense>();
-                        newExpenseList = filterDataExpenseEnd(mExpense, cal);
+                        newExpenseList = filterDataExpense(mExpense, startCal, cal);
                         ExpenseListAdapter adapter = new ExpenseListAdapter(newExpenseList);
                         recyclerView.setAdapter(adapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
@@ -177,20 +180,14 @@ public class RecordsActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayList<Expense> filterDataExpenseStart(ArrayList<Expense> mExpense, Calendar cal){
-        ArrayList<Expense> newExpenseList= new ArrayList<Expense>();
-        for(Expense expense: mExpense){
-            if(expense.getDate().after(cal.getTime())){
-                newExpenseList.add(expense);
-            }
-        }
-        return newExpenseList;
-    }
 
-    private ArrayList<Expense> filterDataExpenseEnd(ArrayList<Expense> mExpense, Calendar cal){
+    private ArrayList<Expense> filterDataExpense(ArrayList<Expense> mExpense, Calendar startCal, Calendar endCal){
         ArrayList<Expense> newExpenseList= new ArrayList<Expense>();
         for(Expense expense: mExpense){
-            if(expense.getDate().before(cal.getTime())){
+            Date expenseDate = new Date(expense.getDate());
+            Log.i("date",String.valueOf(expenseDate.after(startCal.getTime())));
+            Log.i("date",String.valueOf(expenseDate.before(endCal.getTime())));
+            if(expenseDate.after(startCal.getTime()) && expenseDate.before(endCal.getTime())){
                 newExpenseList.add(expense);
             }
         }
@@ -198,10 +195,11 @@ public class RecordsActivity extends AppCompatActivity {
 
     }
 
-    private ArrayList<Income> filterDataIncomeStart(ArrayList<Income> mIncome, Calendar cal){
+    private ArrayList<Income> filterDataIncome(ArrayList<Income> mIncome, Calendar startCal, Calendar endCal){
         ArrayList<Income> newIncomeList= new ArrayList<Income>();
         for(Income income: mIncome){
-            if(income.getDate().after(cal.getTime())){
+            Date incomeDate = new Date(income.getDate());
+            if(incomeDate.after(startCal.getTime()) && incomeDate.before(endCal.getTime())){
                 newIncomeList.add(income);
             }
         }
@@ -209,15 +207,6 @@ public class RecordsActivity extends AppCompatActivity {
     }
 
 
-    private ArrayList<Income> filterDataIncomeEnd(ArrayList<Income> mIncome, Calendar cal){
-        ArrayList<Income> newIncomeList= new ArrayList<Income>();
-        for(Income income: mIncome){
-            if(income.getDate().before(cal.getTime())){
-                newIncomeList.add(income);
-            }
-        }
-        return newIncomeList;
-    }
 
 
     private void setData(String type){
@@ -227,8 +216,10 @@ public class RecordsActivity extends AppCompatActivity {
                 mIncome = category.getIncomes();
                 recyclerView.setVisibility(View.VISIBLE);
                 tvNoRecords.setVisibility(View.GONE);
-                Date startDate = mIncome.get(0).getDate();
-                Date endDate = mIncome.get(mIncome.size() - 1).getDate();
+                long longStartDate = mIncome.get(0).getDate();
+                Date startDate = new Date(longStartDate);
+                long longEndDate= mIncome.get(mIncome.size() - 1).getDate();
+                Date endDate = new Date(longEndDate);
                 tvStartDate.setText(sdf.format(startDate));
                 tvEndDate.setText(sdf.format(endDate));
                 IncomeListAdapter adapter = new IncomeListAdapter(category.getIncomes());
@@ -243,8 +234,10 @@ public class RecordsActivity extends AppCompatActivity {
                 mExpense = category.getExpenses();
                 recyclerView.setVisibility(View.VISIBLE);
                 tvNoRecords.setVisibility(View.GONE);
-                Date startDate = mExpense.get(0).getDate();
-                Date endDate = mExpense.get(mExpense.size() - 1).getDate();
+                long longStartDate = mExpense.get(0).getDate();
+                Date startDate = new Date(longStartDate);
+                long longEndDate =  mExpense.get(mExpense.size() - 1).getDate();
+                Date endDate = new Date(longEndDate);
                 tvStartDate.setText(sdf.format(startDate));
                 tvEndDate.setText(sdf.format(endDate));
                 ExpenseListAdapter adapter = new ExpenseListAdapter(category.getExpenses());

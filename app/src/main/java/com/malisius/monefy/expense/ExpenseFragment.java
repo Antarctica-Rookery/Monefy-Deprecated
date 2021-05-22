@@ -79,6 +79,8 @@ public class ExpenseFragment extends Fragment {
                 if(!snapshot.exists()){
                     Log.w("ExpenseFragment", "No Child Exist");
                 } else {
+                    mCategoriesList.clear();
+                    sections.clear();
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                         Log.i("ExpenseFragment", dataSnapshot.getValue().toString());
                         mCategoriesList.add(dataSnapshot.getValue(Category.class));
@@ -117,7 +119,7 @@ public class ExpenseFragment extends Fragment {
 
             }
         };
-        userDataRef.addListenerForSingleValueEvent(userDataListener);
+        userDataRef.addValueEventListener(userDataListener);
 
         return root;
     }

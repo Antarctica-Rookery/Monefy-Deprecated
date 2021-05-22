@@ -14,6 +14,7 @@ import com.malisius.monefy.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.ExpenseViewHolder> {
     private ArrayList<Expense> mExpense = new ArrayList<Expense>();
@@ -48,10 +49,11 @@ public class ExpenseListAdapter extends RecyclerView.Adapter<ExpenseListAdapter.
         recordName.setText(expense.getName());
 
         TextView recordValue = holder.recordValue;
-        recordValue.setText(expense.getValue());
+        recordValue.setText(String.valueOf(expense.getValue()));
 
         TextView recordDate = holder.recordDate;
-        String date = sdf.format(expense.getDate());
+        Date expenseDate =  new Date(expense.getDate());
+        String date = sdf.format(expenseDate);
         recordDate.setText(date);
 
 

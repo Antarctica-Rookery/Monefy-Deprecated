@@ -19,14 +19,17 @@ import androidx.annotation.RequiresApi;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.malisius.monefy.Income;
 import com.malisius.monefy.R;
 import com.malisius.monefy.category.Category;
+import com.malisius.monefy.expense.Expense;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +41,7 @@ public class RecordDialog {
     private FirebaseAuth mAuth;
     private FirebaseDatabase mDatabase;
     private ArrayList<String> mCategoriesList = new ArrayList<String>();
+    private Date selectedDate;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void showDialog(Context context, Boolean isEdit, Boolean isIncome, String categoryName){
@@ -51,6 +55,8 @@ public class RecordDialog {
         // Handle DatePicker
         DatePicker dateNow = new DatePicker(context);
 
+        TextInputLayout TILAmount = myDialogView.findViewById(R.id.tiamount);
+        TextInputLayout TILName = myDialogView.findViewById(R.id.tiname);
         TextInputEditText tidate = myDialogView.findViewById(R.id.tieditdate);
         tidate.setText(sdf.format(new Date()));
 
@@ -61,7 +67,9 @@ public class RecordDialog {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 Calendar calendar = new Calendar.Builder().setDate(year, month, dayOfMonth).build();
                 if(!calendar.getTime().after(new Date())){
+
                     String date = sdf.format(calendar.getTime());
+                    selectedDate = calendar.getTime();
                     tidate.setText(date);
                     dateNow.updateDate(year, month, dayOfMonth);
                 }
@@ -141,8 +149,62 @@ public class RecordDialog {
         submitDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("selected", String.valueOf(categoriesName.getText()));
-                dialog.dismiss();
+                if(!TILAmount.getEditText().getText().toString().isEmpty() && !categoriesName.getText().toString().equals("Category name")){
+                    Log.i("selected", String.valueOf(categoriesName.getText()));
+                    DatabaseReference userCatRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+                    ValueEventListener userCatListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(!snapshot.exists()){
+                                Log.w("ExpenseFragment", "No Child Exist");
+                            } else {
+                                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                                    if(dataSnapshot.child("name").getValue().equals(categoriesName.getText().toString())){
+                                        String key = dataSnapshot.getKey();
+                                        Category category = dataSnapshot.getValue(Category.class);
+                                        if (selectedDate == null){
+                                            selectedDate = new Date();
+                                        }
+                                        if(isIncome){
+                                            int value = Integer.parseInt(TILAmount.getEditText().getText().toString());
+                                            Income income = new Income(TILName.getEditText().getText().toString(), value, selectedDate.getTime());
+                                            ArrayList<Income> incomes = category.getIncomes();
+                                            if(incomes == null){
+                                                incomes = new ArrayList<Income>();
+                                            }
+                                            incomes.add(income);
+                                            category.setIncomes(incomes);
+                                            DatabaseReference userIncomeRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+                                            userIncomeRef.child(key).setValue(category);
+                                            dialog.dismiss();
+                                        } else {
+                                            int value = Integer.parseInt(TILAmount.getEditText().getText().toString());
+                                            Expense expense = new Expense(TILName.getEditText().getText().toString(), value, selectedDate.getTime());
+                                            ArrayList<Expense> expenses = category.getExpenses();
+                                            if(expenses == null){
+                                                expenses = new ArrayList<Expense>();
+                                            }
+                                            expenses.add(expense);
+                                            category.setExpenses(expenses);
+                                            DatabaseReference userIncomeRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+                                            userIncomeRef.child(key).setValue(category);
+                                            dialog.dismiss();
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    };
+                    userCatRef.addListenerForSingleValueEvent(userCatListener);
+                    dialog.dismiss();
+                }
+
             }
         });
         dialog.show();

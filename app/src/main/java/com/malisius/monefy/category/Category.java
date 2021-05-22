@@ -56,6 +56,7 @@ public class Category {
 
     public void setIncomes(ArrayList<Income> incomes) {
         this.incomes = incomes;
+        totalIncome = 0;
         if(!incomes.isEmpty()){
             for(Income income: incomes){
                 totalIncome += income.getValue();
@@ -65,6 +66,7 @@ public class Category {
 
     public void setExpenses(ArrayList<Expense> expenses) {
         this.expenses = expenses;
+        totalExpense = 0;
         if(!expenses.isEmpty()){
             for(Expense expense: expenses){
                 totalExpense += expense.getValue();

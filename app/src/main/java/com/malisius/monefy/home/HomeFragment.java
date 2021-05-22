@@ -74,8 +74,8 @@ public class HomeFragment extends Fragment {
 //                        for(int i=0;i<dataSnapshot.child(""))
 //                        for(int i=0;i<dataSnapshot.getChildrenCount();i++) {
                         Log.i("HomeFragment", dataSnapshot.getValue().toString());
-
-                        mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().toString()));
+                        Category category = dataSnapshot.getValue(Category.class);
+                        mCategoriesList.add(category);
                         Log.i("HomeFragment", "hello");
 
 //                        }
@@ -113,8 +113,8 @@ public class HomeFragment extends Fragment {
                 } else {
                     mBudgetList.clear();
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-
-                        mBudgetList.add(new Budget(dataSnapshot.child("limit").getValue().hashCode(), dataSnapshot.child("value").getValue().hashCode(),dataSnapshot.child("name").getValue().toString()));
+                        Budget budget = dataSnapshot.getValue(Budget.class);
+                        mBudgetList.add(budget);
                         Log.i("HomeFragment", "hello");
 
 //                        }
