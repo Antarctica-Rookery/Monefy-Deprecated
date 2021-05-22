@@ -20,16 +20,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.malisius.monefy.R;
 import com.malisius.monefy.budget.Budget;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 
 public class CategoryDialog {
     public void showAddDialog(Context context, String name, ArrayList<Category> mCategory, int index){
         AlertDialog.Builder myDialog = new AlertDialog.Builder(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View myDialogView = inflater.inflate(R.layout.edit_category_layout, null);
+        View myDialogView = inflater.inflate(R.layout.dialog_edit_category, null);
 
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
