@@ -80,7 +80,7 @@ public class BudgetListAdapter extends RecyclerView.Adapter<BudgetListAdapter.Bu
             @Override
             public void onClick(View v) {
                 BudgetDialog dialog = new BudgetDialog();
-                dialog.showAddDialog(context,null, mBudget, budget);
+                dialog.showAddDialog(context,true, mBudget, budget);
             }
         });
     }

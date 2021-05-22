@@ -1,7 +1,7 @@
 package com.malisius.monefy.category;
 
 import com.malisius.monefy.expense.Expense;
-import com.malisius.monefy.Income;
+import com.malisius.monefy.income.Income;
 
 import java.util.ArrayList;
 import java.util.Comparator;
