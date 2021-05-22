@@ -9,8 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.malisius.monefy.Expense;
-import com.malisius.monefy.Income;
+import com.malisius.monefy.expense.Expense;
 import com.malisius.monefy.R;
 
 import java.text.SimpleDateFormat;
