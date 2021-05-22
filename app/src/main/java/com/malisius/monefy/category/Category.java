@@ -1,15 +1,14 @@
 package com.malisius.monefy.category;
 
-import android.graphics.Color;
-
-import com.malisius.monefy.Expense;
+import com.malisius.monefy.expense.Expense;
 import com.malisius.monefy.Income;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Category {
     private String name;
-    private int color;
+    private String color;
     private ArrayList<Income> incomes;
     private ArrayList<Expense> expenses;
     private int totalIncome = 0;
@@ -18,7 +17,7 @@ public class Category {
     public Category() {
     }
 
-    public Category(String name, int color) {
+    public Category(String name, String color) {
         this.name = name;
         this.color = color;
     }
@@ -35,7 +34,7 @@ public class Category {
         return expenses;
     }
 
-    public int getColor() {
+    public String getColor() {
         return color;
     }
 
@@ -51,7 +50,7 @@ public class Category {
         this.name = name;
     }
 
-    public void setColor(int color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
@@ -73,15 +72,64 @@ public class Category {
         }
     }
 
-    public static ArrayList<Category> createCategoryList(int numCategory) {
-        ArrayList<Category> contacts = new ArrayList<Category>();
+    public static Comparator<Category> totalIncomeComparatorAsc = new Comparator<Category>() {
 
-        for (int i = 1; i <= numCategory; i++) {
-            int color= ((int)(Math.random()*16777215)) | (0xFF << 24);
-            contacts.add(new Category("Category " + i, color));
+        public int compare(Category s1,Category s2) {
+
+            int income1 = s1.getTotalIncome();
+            int income2 = s2.getTotalIncome();
+
+            /*For ascending order*/
+            return income1-income2;
         }
+    };
 
-        return contacts;
-    }
+    public static Comparator<Category> totalIncomeComparatorDesc = new Comparator<Category>() {
+
+        public int compare(Category s1,Category s2) {
+
+            int income1 = s1.getTotalIncome();
+            int income2 = s2.getTotalIncome();
+
+            /*For ascending order*/
+            return income2-income1;
+        }
+    };
+
+    public static Comparator<Category> totalExpenseComparatorAsc = new Comparator<Category>() {
+
+        public int compare(Category s1,Category s2) {
+
+            int income1 = s1.getTotalExpense();
+            int income2 = s2.getTotalExpense();
+
+            /*For ascending order*/
+            return income1-income2;
+        }
+    };
+
+    public static Comparator<Category> totalExpenseComparatorDesc = new Comparator<Category>() {
+
+        public int compare(Category s1,Category s2) {
+
+            int income1 = s1.getTotalExpense();
+            int income2 = s2.getTotalExpense();
+
+            /*For ascending order*/
+            return income2-income1;
+        }
+    };
+
+    public static Comparator<Category> categoryNameComparator = new Comparator<Category>() {
+
+        public int compare(Category s1, Category s2) {
+            String StudentName1 = s1.getName().toUpperCase();
+            String StudentName2 = s2.getName().toUpperCase();
+
+            //ascending order
+            return StudentName1.compareTo(StudentName2);
+        }
+    };
+
 
 }

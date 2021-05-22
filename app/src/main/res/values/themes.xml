@@ -3,7 +3,7 @@
     <style name="Theme.Monefy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimaryVariant">@color/cloud</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -15,8 +15,6 @@
         <item name="android:fontFamily">@font/redhattext</item>
 
     </style>
-
-    <style name="TextInput" parent="Widget.Design.TextInputLayout"></style>
 
     <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button">
         <item name="colorPrimary">@color/blue_primary</item>

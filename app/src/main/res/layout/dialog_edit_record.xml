@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,8 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/robotocondensed_bold"
-            android:text="Edit/New Record"
-            android:textColor="#000000"
+            android:text="New Record"
+            android:textColor="?attr/colorPrimary"
             android:textSize="24sp" />
 
         <View
@@ -31,16 +31,16 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"
-            android:background="@color/black" />
+            android:background="?attr/colorPrimary" />
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/toggleGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:checkedButton="@id/income"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/robotocondensed_bold"
             android:text="Income"
-            android:textSize="18sp"
+            android:textSize="14sp"
             tools:strokeColor="@color/slight_black" />
 
         <Button
@@ -67,26 +67,31 @@
             android:fontFamily="@font/robotocondensed_bold"
             android:text="Expense"
             tools:strokeColor="@color/slight_black"
-            tools:textSize="18sp" />
+            tools:textSize="14sp" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ticategory"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:hint="Category"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toggleGroup">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <AutoCompleteTextView
+            android:id="@+id/categoryName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="category" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:inputType="none"
+            android:text="Category name" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -94,9 +99,9 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ticategory">
@@ -104,8 +109,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="amount"
-            android:inputType="number" />
+            android:hint="Amount"
+            android:inputType="number"
+            android:maxLines="1"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -113,52 +119,65 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tiamount">
+        app:layout_constraintTop_toBottomOf="@id/tiamount"
+        app:startIconDrawable="@drawable/ic_baseline_edit_calendar_24">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tieditdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="date"
-            android:inputType="date" />
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="Date"
+            android:cursorVisible="false"
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnYes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="Yes"
+        android:textSize="10sp"
         android:theme="@style/ButtonPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tidate" />
 
     <Button
         android:id="@+id/btnNo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
-        android:text="No"
-        android:theme="@style/ButtonSecondary"
 
+        android:layout_marginBottom="16dp"
+        android:text="No"
+        android:textSize="10sp"
+        android:theme="@style/ButtonSecondary"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnYes"
-        app:layout_constraintTop_toBottomOf="@id/tidate" />
+        app:layout_constraintTop_toBottomOf="@+id/tidate" />
 
     <ImageView
         android:id="@+id/deleteIcon"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tidate"
+        app:layout_constraintTop_toBottomOf="@+id/tidate"
         app:srcCompat="@drawable/ic_baseline_delete_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
