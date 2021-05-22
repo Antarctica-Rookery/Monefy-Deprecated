@@ -27,7 +27,7 @@
             android:background="@color/blue_primary" />
 
         <TextView
-            android:id="@+id/tv_incomecategoryName"
+            android:id="@+id/tv_income_categoryName"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

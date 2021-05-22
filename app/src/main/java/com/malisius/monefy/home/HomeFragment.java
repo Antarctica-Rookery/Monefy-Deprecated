@@ -183,7 +183,7 @@ public class HomeFragment extends Fragment {
 
         for(int i=0; i < categories_size; i++ ){
             categoryItem = getLayoutInflater().inflate(R.layout.income_item_layout, null);
-            TextView categoryName = categoryItem.findViewById(R.id.tv_incomecategoryName);
+            TextView categoryName = categoryItem.findViewById(R.id.tv_income_categoryName);
             TextView categoryTotal = categoryItem.findViewById(R.id.income_category_total);
             ImageView detailButton = categoryItem.findViewById(R.id.detail_income_button);
             View categoryBar = categoryItem.findViewById(R.id.income_color_bar);
@@ -301,38 +301,5 @@ public class HomeFragment extends Fragment {
         budgetInsertPoint.addView(show_more);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance();
-        ArrayList<Income> income = new ArrayList<Income>();
-
-        ArrayList<Expense> expense = new ArrayList<Expense>();
-
-        DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
-
-        ValueEventListener userDataListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()){
-                    Log.w("HomeFragment", "No Children");
-                } else {
-                    for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-//                        for(int i=0;i<dataSnapshot.child(""))
-//                        for(int i=0;i<dataSnapshot.getChildrenCount();i++) {
-                        Log.i("HomeFragment", dataSnapshot.getValue().toString());
-
-
-                            mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().toString()));
-                            Log.i("HomeFragment", "hello");
-
-                    }
-                    Collections.sort(mCategoriesList, Category.categoryNameComparator);
-
-                    handleIncome();
-                    handleExpense();
-                }
-            }
 
 }
