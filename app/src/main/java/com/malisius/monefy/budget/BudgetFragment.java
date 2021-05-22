@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,6 +44,7 @@ public class BudgetFragment extends Fragment {
     private ArrayList<String> donutColor = new ArrayList<String>();
     private RecyclerView budgetRecycle;
     private TextView budgetLeft, budgetTotal;
+    private FloatingActionButton fabButton;
 
     private String formatRupiah(int number){
         Locale localeID = new Locale("in", "ID");
@@ -54,6 +57,16 @@ public class BudgetFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_budget, container, false);
+        ConstraintLayout rootParent = (ConstraintLayout) container.getParent();
+        fabButton = rootParent.findViewById(R.id.floatingActionButton);
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("BudgetFragment", "fabButton pressed");
+                BudgetDialog dialog = new BudgetDialog();
+                dialog.showAddDialog(getContext(),"new", mBudgetList, null);
+            }
+        });
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
         budgetRecycle = root.findViewById(R.id.budget_recycle);
