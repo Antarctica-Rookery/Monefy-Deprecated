@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,18 +25,24 @@ import com.malisius.monefy.MainActivity;
 import com.malisius.monefy.R;
 import com.malisius.monefy.about_us.AboutUsActivity;
 import com.malisius.monefy.category.CategoryActivity;
+import com.malisius.monefy.records.RecordDialog;
 
 public class SettingsFragment extends Fragment {
     LinearLayout aboutUs, categories, logout;
     TextView usernameTv, emailTv;
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;
+    private FloatingActionButton fabButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
+        ConstraintLayout rootParent = (ConstraintLayout) container.getParent();
+
+        fabButton = rootParent.findViewById(R.id.floatingActionButton);
+        fabButton.setVisibility(View.GONE);
 
         //init Firebase to get username and email
         mAuth = FirebaseAuth.getInstance();

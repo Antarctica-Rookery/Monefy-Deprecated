@@ -1,10 +1,12 @@
 package com.malisius.monefy.expense;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,7 +56,9 @@ public class ExpenseFragment extends Fragment {
 
         // Fab controller
         fabButton = rootParent.findViewById(R.id.floatingActionButton);
+        fabButton.setVisibility(View.VISIBLE);
         fabButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 RecordDialog dialog = new RecordDialog();
