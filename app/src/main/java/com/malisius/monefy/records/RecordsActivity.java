@@ -105,14 +105,14 @@ public class RecordsActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar cal = new Calendar.Builder().setDate(year, month, dayOfMonth).build();
+                Calendar cal = new Calendar.Builder().setDate(year, month, dayOfMonth).setTimeOfDay(0,0,0).build();
                 if(!cal.getTime().after(new Date())){
                     String date = sdf.format(cal.getTime());
                     tvStartDate.setText(date);
                 }
                 startDatePicker.updateDate(year, month, dayOfMonth);
                 Log.i("enddate", String.valueOf(endDatePicker.getYear()));
-                Calendar endCal = new Calendar.Builder().setDate(endDatePicker.getYear(), endDatePicker.getMonth(), endDatePicker.getDayOfMonth()).build();
+                Calendar endCal = new Calendar.Builder().setDate(endDatePicker.getYear(), endDatePicker.getMonth(), endDatePicker.getDayOfMonth()).setTimeOfDay(23,59,59).build();
                 if(type.equals("income")){
                     if(mIncome != null) {
                         ArrayList<Income> newIncomeList = new ArrayList<Income>();
@@ -139,13 +139,13 @@ public class RecordsActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar cal = new Calendar.Builder().setDate(year, month, dayOfMonth).build();
+                Calendar cal = new Calendar.Builder().setDate(year, month, dayOfMonth).setTimeOfDay(23,59,59).build();
                 if (!cal.getTime().after(new Date())) {
                     String date = sdf.format(cal.getTime());
                     tvEndDate.setText(date);
                 }
                 endDatePicker.updateDate(year, month, dayOfMonth);
-                Calendar startCal = new Calendar.Builder().setDate(startDatePicker.getYear(), startDatePicker.getMonth(), startDatePicker.getDayOfMonth()).build();
+                Calendar startCal = new Calendar.Builder().setDate(startDatePicker.getYear(), startDatePicker.getMonth(), startDatePicker.getDayOfMonth()).setTimeOfDay(0,0,0).build();
                 if(type.equals("income")){
                     if(mIncome != null) {
                         ArrayList<Income> newIncomeList = new ArrayList<Income>();
