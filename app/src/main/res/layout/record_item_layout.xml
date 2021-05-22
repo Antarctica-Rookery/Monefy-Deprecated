@@ -29,7 +29,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/robotocondensed_regular"
                 android:text="Record name"
-                android:textColor="#000000"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="18sp" />
 
             <TextView

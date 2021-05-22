@@ -5,8 +5,6 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,14 +25,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BudgetDialog {
-    private FirebaseAuth mAuth;
-    private FirebaseDatabase mDatabase;
-    private ArrayList<String> mCategoriesList = new ArrayList<String>();
-
     public void showAddDialog(Context context, Boolean status, ArrayList<Budget> mBudget, Budget oldBudget){
         AlertDialog.Builder myDialog = new AlertDialog.Builder(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View myDialogView = inflater.inflate(R.layout.dialog_edit_budget, null);
+
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         myDialog.setView(myDialogView);
         myDialog.setCancelable(true);
@@ -46,34 +43,6 @@ public class BudgetDialog {
         TextView dialogTitle = myDialogView.findViewById(R.id.tveditrecord);
         TextInputLayout budgetName = myDialogView.findViewById(R.id.budget_text_field);
         TextInputLayout budgetLimit = myDialogView.findViewById(R.id.budget_edit_limit);
-
-        // Handle Dropdown Categories //
-        AutoCompleteTextView categoriesName = myDialogView.findViewById(R.id.categoryName);
-
-        mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
-        ValueEventListener userDataListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()){
-                    Log.w("ExpenseFragment", "No Child Exist");
-                } else {
-                    for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
-                        mCategoriesList.add(dataSnapshot.getValue(Category.class).getName());
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        userDataRef.addListenerForSingleValueEvent(userDataListener);
-        ArrayAdapter arrayAdapter = new ArrayAdapter(context, R.layout.dropdown_categories, mCategoriesList);
-        categoriesName.setAdapter(arrayAdapter);
-        // Handle Dropdown Categories //
 
         // Check if edit or new
         if(status) {
@@ -110,7 +79,7 @@ public class BudgetDialog {
                                 if (dataSnapshot.child("name").getValue().toString().equals(oldBudget.getName())) {
                                     String key = dataSnapshot.getKey();
                                     DatabaseReference budgetRef = userBudgetRef.child(key);
-                                    budgetRef.removeValue();
+                                    budgetRef.child("limit").setValue(0);
                                     dialog.dismiss();
                                 }
                             }
@@ -130,7 +99,7 @@ public class BudgetDialog {
             @Override
             public void onClick(View v) {
                 if(status) {
-                    if (!budgetName.getEditText().getText().toString().equals("Category Name") && !budgetLimit.getEditText().getText().toString().isEmpty()) {
+                    if (!budgetName.getEditText().getText().toString().isEmpty() && !budgetLimit.getEditText().getText().toString().isEmpty()) {
                         DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Budget");
                         ValueEventListener userDataListener = new ValueEventListener() {
                             @Override
@@ -173,7 +142,7 @@ public class BudgetDialog {
                         userDataRef.addListenerForSingleValueEvent(userDataListener);
                     }
                 }else{
-                    if (!budgetName.getEditText().getText().toString().equals("Category Name") && !budgetLimit.getEditText().getText().toString().isEmpty()) {
+                    if (!budgetName.getEditText().getText().toString().isEmpty() && !budgetLimit.getEditText().getText().toString().isEmpty()) {
 
                             DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
                             DatabaseReference userBudgetRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Budget");

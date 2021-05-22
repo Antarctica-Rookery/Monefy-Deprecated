@@ -35,23 +35,20 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/budget_text_field"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="Category"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title">
 
-        <AutoCompleteTextView
-            android:id="@+id/categoryName"
+        <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="none"
-            android:text="Category Name" />
+            android:layout_height="wrap_content"
+            android:hint="category" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -71,7 +68,7 @@
             android:layout_height="wrap_content"
             android:hint="Limit"
             android:inputType="number"
-            android:maxLines="1"/>
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
 
