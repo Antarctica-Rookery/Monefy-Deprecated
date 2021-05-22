@@ -52,7 +52,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             @Override
             public void onClick(View v) {
                 CategoryDialog dialog = new CategoryDialog();
-                dialog.showAddDialog(context, category.getName());
+                dialog.showAddDialog(context, category.getName(), true);
             }
         });
     }

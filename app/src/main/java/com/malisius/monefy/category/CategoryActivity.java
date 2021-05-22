@@ -110,6 +110,6 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void createDialog() {
         CategoryDialog dialog = new CategoryDialog();
-        dialog.showAddDialog(this,null);
+        dialog.showAddDialog(this,null, false);
     }
 }
