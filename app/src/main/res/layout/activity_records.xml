@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/records"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?android:attr/colorBackground"
-   >
+    tools:context=".records.RecordsActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -39,7 +37,6 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:visibility="invisible"
             android:layout_width="24dp"
             android:layout_height="24dp"
             app:srcCompat="@drawable/ic_baseline_search_24" />
@@ -120,18 +117,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/start_date"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_weight="1">
+                <Button
+                    android:id="@+id/button_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start Date"
+                    android:layout_weight="1"
+                    />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Start date" />
-                </com.google.android.material.textfield.TextInputLayout>
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/start_date"-->
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="29dp"-->
+<!--                    android:layout_weight="1">-->
+
+<!--                    <com.google.android.material.textfield.TextInputEditText-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:hint="Start date" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
                 <View
                     android:id="@+id/divider14"
@@ -139,18 +144,26 @@
                     android:layout_height="match_parent"
                     android:background="#00FFFFFF" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/end_date"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_weight="1">
+                <Button
+                    android:id="@+id/button_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="End Date"
+                    android:layout_weight="1"
+                    />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="End date" />
-                </com.google.android.material.textfield.TextInputLayout>
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:id="@+id/end_date"-->
+<!--                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="40dp"-->
+<!--                    android:layout_weight="1">-->
+
+<!--                    <com.google.android.material.textfield.TextInputEditText-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:hint="End date" />-->
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
             </LinearLayout>
 
         </LinearLayout>
@@ -166,15 +179,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_dates"
         android:text="No Records Found"/>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_records"
+        android:id="@+id/recyclerView"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

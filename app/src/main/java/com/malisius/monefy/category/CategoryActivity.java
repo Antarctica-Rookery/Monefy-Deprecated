@@ -54,7 +54,6 @@ public class CategoryActivity extends AppCompatActivity {
 
                 //open dialog
                 createDialog();
-
 //                int total_category = categories.size();
 //                int color= ((int)(Math.random()*16777215)) | (0xFF << 24);
 //                categories.add(new Category("Category " + (total_category + 1), color ));
@@ -87,16 +86,20 @@ public class CategoryActivity extends AppCompatActivity {
         ValueEventListener userDataListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mCategoriesList.clear();
                 if(!snapshot.exists()){
                     Log.w("CategoryActivity", "No Children");
                 } else {
                     for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                         Log.i("CategoryActivity", dataSnapshot.getValue().toString());
 
-                        mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().hashCode()));
+                        mCategoriesList.add(new Category(dataSnapshot.child("name").getValue().toString(),dataSnapshot.child("color").getValue().toString()));
                         Log.i("CategoryActivity", "hello");
                     }
                     Collections.sort(mCategoriesList, Category.categoryNameComparator);
+                    CategoryListAdapter adapter = new CategoryListAdapter(mCategoriesList);
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(CategoryActivity.this));
                 }
             }
 
@@ -110,6 +113,6 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void createDialog() {
         CategoryDialog dialog = new CategoryDialog();
-        dialog.showAddDialog(this,null, false);
+        dialog.showAddDialog(this,null, mCategoriesList, 0);
     }
 }

@@ -1,6 +1,7 @@
 package com.malisius.monefy.category;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.malisius.monefy.R;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
-    private List<Category> mCategory;
+    private ArrayList<Category> mCategory = new ArrayList<Category>();
     private Context context;
 
-    public CategoryListAdapter(List<Category> category){
+    public CategoryListAdapter(ArrayList<Category> category){
         mCategory = category;
     }
 
@@ -46,13 +49,15 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         textView.setText(category.getName());
 
         View view_color = holder.categoryColor;
-        view_color.setBackgroundColor(0xff000000 + Integer.parseInt(Integer.toHexString(category.getColor()),16));
+        view_color.setBackgroundColor(Color.parseColor(category.getColor()));
 
         holder.ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CategoryDialog dialog = new CategoryDialog();
-                dialog.showAddDialog(context, category.getName(), true);
+
+                dialog.showAddDialog(context, category.getName(), mCategory, position);
+                mCategory.clear();
             }
         });
     }

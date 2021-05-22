@@ -1,8 +1,6 @@
 package com.malisius.monefy.category;
 
-import android.graphics.Color;
-
-import com.malisius.monefy.Expense;
+import com.malisius.monefy.expense.Expense;
 import com.malisius.monefy.Income;
 
 import java.util.ArrayList;
@@ -10,7 +8,7 @@ import java.util.Comparator;
 
 public class Category {
     private String name;
-    private int color;
+    private String color;
     private ArrayList<Income> incomes;
     private ArrayList<Expense> expenses;
     private int totalIncome = 0;
@@ -19,7 +17,7 @@ public class Category {
     public Category() {
     }
 
-    public Category(String name, int color) {
+    public Category(String name, String color) {
         this.name = name;
         this.color = color;
     }
@@ -36,7 +34,7 @@ public class Category {
         return expenses;
     }
 
-    public int getColor() {
+    public String getColor() {
         return color;
     }
 
@@ -52,7 +50,7 @@ public class Category {
         this.name = name;
     }
 
-    public void setColor(int color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
@@ -133,15 +131,5 @@ public class Category {
         }
     };
 
-    public static ArrayList<Category> createCategoryList(int numCategory) {
-        ArrayList<Category> contacts = new ArrayList<Category>();
-
-        for (int i = 1; i <= numCategory; i++) {
-            int color= ((int)(Math.random()*16777215)) | (0xFF << 24);
-            contacts.add(new Category("Category " + i, color));
-        }
-
-        return contacts;
-    }
 
 }

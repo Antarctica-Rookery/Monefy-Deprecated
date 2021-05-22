@@ -1,17 +1,21 @@
-package com.malisius.monefy;
+package com.malisius.monefy.expense;
+
+import java.util.Date;
 
 public class Expense {
 
     private String name;
     private int value;
+    private Date date;
 
 
     public Expense() {
     }
 
-    public Expense(String name, int value) {
+    public Expense(String name, int value, Date date) {
         this.name = name;
         this.value = value;
+        this.date = date;
     }
 
     public String getName() {
@@ -28,6 +32,14 @@ public class Expense {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }
 

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/ll"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <View
-            android:id="@+id/view"
+            android:id="@+id/expense_color_bar"
             android:layout_width="5dp"
             android:layout_height="36dp"
             android:layout_gravity="center"
@@ -27,8 +27,8 @@
             android:background="@color/red_secondary" />
 
         <TextView
-            android:id="@+id/tv_categoryName"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_expense_categoryName"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="0.7"
@@ -37,16 +37,9 @@
             android:text="Category name"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="8dp"
-            android:text="Rp" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/expense_category_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -54,7 +47,7 @@
             android:text="100.000" />
 
         <ImageView
-            android:id="@+id/imageView10"
+            android:id="@+id/detail_expense_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
