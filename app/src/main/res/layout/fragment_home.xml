@@ -228,7 +228,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:cardElevation="10dp"
-                app:layout_constraintTop_toBottomOf="@id/inflater_income">
+                app:layout_constraintTop_toBottomOf="@id/inflater_budget">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                                         Bundle userBundle = new Bundle();
                                         userBundle.putString("username", username);
                                         userBundle.putString("uid", user.getUid());
+//                                        initiateCategory();
                                         Snackbar.make(constraintLayout,"Login Successful",Snackbar.LENGTH_SHORT).show();
                                         Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
                                         homeIntent.putExtra("USER_DATA", userBundle);
@@ -224,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     }
 
-                                    initiateCategory();
                                 }
                             });
                 }
@@ -261,7 +261,6 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success
                             FirebaseUser user = mAuth.getCurrentUser();
-                            initiateCategory();
                             Intent iWannaGoHome = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(iWannaGoHome);
                         } else {
@@ -271,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     private void initiateCategory() {
         DatabaseReference userDataRef = mDatabase.getReference("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");

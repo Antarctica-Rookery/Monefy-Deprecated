@@ -25,7 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.malisius.monefy.expense.Expense;
-import com.malisius.monefy.Income;
+import com.malisius.monefy.income.Income;
 import com.malisius.monefy.R;
 import com.malisius.monefy.records.RecordsActivity;
 import com.malisius.monefy.budget.Budget;
@@ -183,7 +183,7 @@ public class HomeFragment extends Fragment {
 
         for(int i=0; i < categories_size; i++ ){
             categoryItem = getLayoutInflater().inflate(R.layout.income_item_layout, null);
-            TextView categoryName = categoryItem.findViewById(R.id.tv_incomecategoryName);
+            TextView categoryName = categoryItem.findViewById(R.id.tv_income_categoryName);
             TextView categoryTotal = categoryItem.findViewById(R.id.income_category_total);
             ImageView detailButton = categoryItem.findViewById(R.id.detail_income_button);
             View categoryBar = categoryItem.findViewById(R.id.income_color_bar);
