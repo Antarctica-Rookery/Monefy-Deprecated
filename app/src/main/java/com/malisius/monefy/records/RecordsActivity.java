@@ -103,25 +103,28 @@ public class RecordsActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-//                        endDatePicker = view;
                 Calendar cal = new Calendar.Builder().setDate(year, month, dayOfMonth).build();
                 if(!cal.getTime().after(new Date())){
                     String date = sdf.format(cal.getTime());
-                    tvEndDate.setText(date);
+                    tvStartDate.setText(date);
                 }
-                endDatePicker.updateDate(year, month, dayOfMonth);
+                startDatePicker.updateDate(year, month, dayOfMonth);
                 if(type.equals("income")){
-                    ArrayList<Income> newIncomeList = new ArrayList<Income>();
-                    newIncomeList = filterDataIncomeStart(mIncome, cal);
-                    IncomeListAdapter adapter = new IncomeListAdapter(newIncomeList);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                    if(mExpense != null) {
+                        ArrayList<Income> newIncomeList = new ArrayList<Income>();
+                        newIncomeList = filterDataIncomeStart(mIncome, cal);
+                        IncomeListAdapter adapter = new IncomeListAdapter(newIncomeList);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                    }
                 } else {
-                    ArrayList<Expense> newExpenseList = new ArrayList<Expense>();
-                    newExpenseList = filterDataExpenseStart(mExpense, cal);
-                    ExpenseListAdapter adapter = new ExpenseListAdapter(newExpenseList);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                    if(mExpense != null) {
+                        ArrayList<Expense> newExpenseList = new ArrayList<Expense>();
+                        newExpenseList = filterDataExpenseStart(mExpense, cal);
+                        ExpenseListAdapter adapter = new ExpenseListAdapter(newExpenseList);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                    }
                 }
 
             }
@@ -132,7 +135,6 @@ public class RecordsActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
                 Calendar cal = new Calendar.Builder().setDate(year, month, dayOfMonth).build();
                 if (!cal.getTime().after(new Date())) {
                     String date = sdf.format(cal.getTime());
@@ -140,17 +142,21 @@ public class RecordsActivity extends AppCompatActivity {
                 }
                 endDatePicker.updateDate(year, month, dayOfMonth);
                 if(type.equals("income")){
-                    ArrayList<Income> newIncomeList = new ArrayList<Income>();
-                    newIncomeList = filterDataIncomeEnd(mIncome, cal);
-                    IncomeListAdapter adapter = new IncomeListAdapter(newIncomeList);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                    if(mIncome != null) {
+                        ArrayList<Income> newIncomeList = new ArrayList<Income>();
+                        newIncomeList = filterDataIncomeEnd(mIncome, cal);
+                        IncomeListAdapter adapter = new IncomeListAdapter(newIncomeList);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                    }
                 } else {
-                    ArrayList<Expense> newExpenseList = new ArrayList<Expense>();
-                    newExpenseList = filterDataExpenseEnd(mExpense, cal);
-                    ExpenseListAdapter adapter = new ExpenseListAdapter(newExpenseList);
-                    recyclerView.setAdapter(adapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                    if(mExpense != null) {
+                        ArrayList<Expense> newExpenseList = new ArrayList<Expense>();
+                        newExpenseList = filterDataExpenseEnd(mExpense, cal);
+                        ExpenseListAdapter adapter = new ExpenseListAdapter(newExpenseList);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(RecordsActivity.this));
+                    }
                 }
             }
         });
