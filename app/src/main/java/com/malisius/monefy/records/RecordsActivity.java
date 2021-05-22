@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,6 +67,13 @@ public class RecordsActivity extends AppCompatActivity {
         startDatePicker = new DatePicker(this);
         endDatePicker = new DatePicker(this);
         tvCategoryName.setText(name);
+        ImageView backBtnRecords = findViewById(R.id.back_btn_records);
+        backBtnRecords.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         ValueEventListener catDataListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
