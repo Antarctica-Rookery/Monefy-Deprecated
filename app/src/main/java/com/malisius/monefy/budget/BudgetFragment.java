@@ -59,12 +59,13 @@ public class BudgetFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_budget, container, false);
         ConstraintLayout rootParent = (ConstraintLayout) container.getParent();
         fabButton = rootParent.findViewById(R.id.floatingActionButton);
+        fabButton.setVisibility(View.VISIBLE);
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("BudgetFragment", "fabButton pressed");
                 BudgetDialog dialog = new BudgetDialog();
-                dialog.showAddDialog(getContext(),"new", mBudgetList, null);
+                dialog.showAddDialog(getContext(),false, mBudgetList, null);
             }
         });
         mAuth = FirebaseAuth.getInstance();

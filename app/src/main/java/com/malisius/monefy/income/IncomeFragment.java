@@ -63,7 +63,7 @@ public class IncomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 RecordDialog dialog = new RecordDialog();
-                dialog.showDialog(getContext(), false, false, null);
+                dialog.showDialog(getContext(), false, true, null);
             }
         });
 
