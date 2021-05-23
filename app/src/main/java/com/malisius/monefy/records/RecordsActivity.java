@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +31,8 @@ import com.malisius.monefy.category.Category;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 public class RecordsActivity extends AppCompatActivity {
@@ -46,6 +49,7 @@ public class RecordsActivity extends AppCompatActivity {
     private ArrayList<Expense> mExpense = new ArrayList<Expense>();
     private SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yy");
     private DatePicker startDatePicker, endDatePicker;
+    private FloatingActionButton fabButton;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -63,6 +67,7 @@ public class RecordsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView_records);
         btnStartDate = findViewById(R.id.button_start_date);
         btnEndDate = findViewById(R.id.button_end_date);
+        fabButton = findViewById(R.id.records_fab);
         startDatePicker = new DatePicker(this);
         endDatePicker = new DatePicker(this);
         tvCategoryName.setText(name);
@@ -74,6 +79,7 @@ public class RecordsActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
 
         ValueEventListener catDataListener = new ValueEventListener() {
             @Override
@@ -99,6 +105,7 @@ public class RecordsActivity extends AppCompatActivity {
             }
         };
         catDataRef.addValueEventListener(catDataListener);
+
 
         DatePickerDialog startDatePickerDialog = new DatePickerDialog(RecordsActivity.this);
         startDatePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
@@ -179,6 +186,19 @@ public class RecordsActivity extends AppCompatActivity {
                 startDatePickerDialog.show();
             }
         });
+
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(type.equals("income")){
+                    RecordDialog dialog = new RecordDialog();
+                    dialog.showDialog(RecordsActivity.this, false, true, name, 0);
+                } else {
+                    RecordDialog dialog = new RecordDialog();
+                    dialog.showDialog(RecordsActivity.this,false, false, name, 0);
+                }
+            }
+        });
     }
 
 
@@ -215,6 +235,7 @@ public class RecordsActivity extends AppCompatActivity {
 
             if(category.getIncomes() != null){
                 mIncome = category.getIncomes();
+                Collections.sort(mIncome, Income.incomeDateComparator);
                 recyclerView.setVisibility(View.VISIBLE);
                 tvNoRecords.setVisibility(View.GONE);
                 long longStartDate = mIncome.get(0).getDate();
@@ -230,12 +251,15 @@ public class RecordsActivity extends AppCompatActivity {
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
             } else {
+                recyclerView.setVisibility(View.GONE);
+                tvNoRecords.setVisibility(View.VISIBLE);
                 tvStartDate.setText(sdf.format(new Date()));
                 tvEndDate.setText(sdf.format(new Date()));
             }
         } else {
             if(category.getExpenses() != null){
                 mExpense = category.getExpenses();
+                Collections.sort(mExpense, Expense.expenseDateComparator);
                 recyclerView.setVisibility(View.VISIBLE);
                 tvNoRecords.setVisibility(View.GONE);
                 long longStartDate = mExpense.get(0).getDate();
@@ -251,6 +275,8 @@ public class RecordsActivity extends AppCompatActivity {
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
             } else {
+                recyclerView.setVisibility(View.GONE);
+                tvNoRecords.setVisibility(View.VISIBLE);
                 Date now = new Date();
                 tvStartDate.setText(sdf.format(now));
                 tvEndDate.setText(sdf.format(now));

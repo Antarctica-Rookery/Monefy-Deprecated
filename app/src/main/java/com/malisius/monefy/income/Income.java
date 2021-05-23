@@ -1,5 +1,8 @@
 package com.malisius.monefy.income;
 
+import com.malisius.monefy.expense.Expense;
+
+import java.util.Comparator;
 import java.util.Date;
 
 public class Income {
@@ -41,4 +44,14 @@ public class Income {
 
     public long getDate() {return date;};
 
+    public static Comparator<Income> incomeDateComparator = new Comparator<Income>() {
+
+        public int compare(Income s1, Income s2) {
+            Date date1 = new Date(s1.getDate());
+            Date date2 = new Date(s2.getDate());
+
+            //desc order
+            return date1.compareTo(date2);
+        }
+    };
 }

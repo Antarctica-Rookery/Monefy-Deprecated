@@ -61,7 +61,8 @@ public class BudgetListAdapter extends RecyclerView.Adapter<BudgetListAdapter.Bu
         budgetValue.setText(formatRupiah(budget.getValue()));
 
         TextView budgetLimit = holder.budgetLimit;
-        budgetLimit.setText(formatRupiah(budget.getLimit()));
+        if(budget.getLimit() > 0) budgetLimit.setText(formatRupiah(budget.getLimit()));
+        else budgetLimit.setText("Not Set");
 
         ProgressBar progressBar = holder.progressBar;
         if(budget.getLimit() > 0) {
