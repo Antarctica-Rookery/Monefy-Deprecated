@@ -282,7 +282,8 @@ public class HomeFragment extends Fragment {
             TextView budgetValue = categoryItem.findViewById(R.id.item_budget_left);
             ProgressBar progressBar = categoryItem.findViewById(R.id.progressBar4);
             budgetName.setText(mBudgetList.get(i).getName());
-            budgetLimit.setText(formatRupiah(mBudgetList.get(i).getLimit()));
+            if(mBudgetList.get(i).getLimit() > 0) budgetLimit.setText(formatRupiah(mBudgetList.get(i).getLimit()));
+            else budgetLimit.setText("Not Set");
             budgetValue.setText(formatRupiah(mBudgetList.get(i).getValue()));
             float progress;
             if(mBudgetList.get(i).getLimit() > 0){
@@ -313,5 +314,88 @@ public class HomeFragment extends Fragment {
         budgetInsertPoint.addView(show_more);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ArrayList<Income> income = new ArrayList<Income>();
 
+        ArrayList<Expense> expense = new ArrayList<Expense>();
+
+        DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
+
+        ValueEventListener userDataListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mCategoriesList.clear();
+                if(!snapshot.exists()){
+                    Log.w("HomeFragment", "No Children");
+                } else {
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+//                        for(int i=0;i<dataSnapshot.child(""))
+//                        for(int i=0;i<dataSnapshot.getChildrenCount();i++) {
+                        Log.i("HomeFragment", dataSnapshot.getValue().toString());
+                        Category category = dataSnapshot.getValue(Category.class);
+                        mCategoriesList.add(category);
+                        Log.i("HomeFragment", "hello");
+
+//                        }
+                    }
+                    Collections.sort(mCategoriesList, Category.categoryNameComparator);
+                    if(mCategoriesList.size() > 4) categories_size = 4;
+                    else {
+                        categories_size = mCategoriesList.size();
+                    }
+                    LinearLayout cardViewIncome = rootView.findViewById(R.id.inflater_income);
+                    cardViewIncome.removeAllViews();
+                    LinearLayout cardViewExpense = rootView.findViewById(R.id.inflater_expense);
+                    cardViewExpense.removeAllViews();
+                    handleIncome();
+                    handleExpense();
+                    handleTotal(rootView);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("HomeFragment", "loadPost:onCancelled", error.toException());
+            }
+        };
+        userDataRef.addListenerForSingleValueEvent(userDataListener);
+
+        DatabaseReference userBudgetRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Budget");
+
+        ValueEventListener userBudgetListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!snapshot.exists()){
+                    Log.w("HomeFragment", "No Children");
+                } else {
+                    mBudgetList.clear();
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                        Budget budget = dataSnapshot.getValue(Budget.class);
+                        mBudgetList.add(budget);
+                        Log.i("HomeFragment", "hello");
+
+//                        }
+                    }
+                    Collections.sort(mBudgetList, Budget.budgetComparatorDesc);
+                    if(mBudgetList.size() > 4) budget_size = 4;
+                    else {
+                        budget_size = mBudgetList.size();
+                    }
+                    LinearLayout cardViewBudget = rootView.findViewById(R.id.inflater_budget);
+                    cardViewBudget.removeAllViews();
+                    handleBudget();
+                    handleTotal(rootView);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("HomeFragment", "loadPost:onCancelled", error.toException());
+            }
+        };
+        userBudgetRef.addListenerForSingleValueEvent(userBudgetListener);
+    }
 }

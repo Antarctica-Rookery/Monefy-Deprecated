@@ -77,7 +77,7 @@ public class CategoryExpenseListAdapter extends RecyclerView.Adapter<CategoryExp
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("name", category.getName());
-                bundle.putString("type", "income");
+                bundle.putString("type", "expense");
                 openDetail(bundle);
             }
         });

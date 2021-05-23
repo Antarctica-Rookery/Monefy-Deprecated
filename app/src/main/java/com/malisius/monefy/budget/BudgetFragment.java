@@ -99,10 +99,13 @@ public class BudgetFragment extends Fragment {
                 for(int i = 0; i< 3; i++){
                     totalLeft = totalLeft + mBudgetList.get(i).getValue();
                 }
-                budgetLeft.setText(formatRupiah(totalLeft));
-                budgetTotal.setText(formatRupiah(totalLimit));
+
                 int j = 0;
+                int totalBudgetLeft = 0;
+                int totalBudgetLimit = 0;
                 for(Budget budget: mBudgetList){
+                    totalBudgetLeft = totalBudgetLeft + budget.getValue();
+                    totalBudgetLimit = totalBudgetLimit + budget.getLimit();
                     if(totalLimit > 0) {
                         if (j < 3) {
                             sections.add(new DonutSection(budget.getName(), Color.parseColor(donutColor.get(j)), (float) budget.getLimit() / totalLimit));
@@ -115,6 +118,8 @@ public class BudgetFragment extends Fragment {
                         }
                     }
                 }
+                budgetLeft.setText(formatRupiah(totalBudgetLeft));
+                budgetTotal.setText(formatRupiah(totalBudgetLimit));
                 donutProgressView.setCap(1);
                 donutProgressView.submitData(sections);
                 BudgetListAdapter adapter = new BudgetListAdapter(mBudgetList);
