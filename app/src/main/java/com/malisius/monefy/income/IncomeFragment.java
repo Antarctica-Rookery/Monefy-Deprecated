@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,8 +33,10 @@ import com.malisius.monefy.category.CategoryListAdapter;
 import com.malisius.monefy.expense.CategoryExpenseListAdapter;
 import com.malisius.monefy.records.RecordDialog;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 import app.futured.donut.DonutProgressView;
 import app.futured.donut.DonutSection;
@@ -44,9 +47,10 @@ public class IncomeFragment extends Fragment {
     private FirebaseDatabase mDatabase;
     private ArrayList<DonutSection> sections = new ArrayList<>();
     private ArrayList<Category> mCategoriesList = new ArrayList<Category>();
-    private ArrayList<String> donutColor = new ArrayList<String>();
     private RecyclerView recyclerView;
     private FloatingActionButton fabButton;
+    private TextView totalIncome;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +58,8 @@ public class IncomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_income, container, false);
         ConstraintLayout rootParent = (ConstraintLayout) container.getParent();
+
+        totalIncome = root.findViewById(R.id.totalIncome);
 
         // Fab controller
         fabButton = rootParent.findViewById(R.id.floatingActionButton);
@@ -70,9 +76,6 @@ public class IncomeFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
         donutProgressView = root.findViewById(R.id.donut_view);
-        donutColor.add("#aed581");
-        donutColor.add("#8bc34a");
-        donutColor.add("#689f38");
         DatabaseReference userDataRef = mDatabase.getReference().child("Data").child(mAuth.getCurrentUser().getUid()).child("Categories");
         ValueEventListener userDataListener = new ValueEventListener() {
             @Override
@@ -89,22 +92,14 @@ public class IncomeFragment extends Fragment {
                     }
                     Collections.sort(mCategoriesList, Category.totalIncomeComparatorDesc);
                     int totalIncomes = 0;
-                    for (int i = 0; i < 3; i++) {
-                        totalIncomes = totalIncomes + mCategoriesList.get(i).getTotalIncome();
-                    }
-                    int j = 0;
+
+                    // for top 3 income
+//                    for (int i = 0; i < 3; i++) {
+//                        totalIncomes = totalIncomes + mCategoriesList.get(i).getTotalIncome();
+//                    }
                     for (Category category : mCategoriesList) {
-                        if (totalIncomes > 0) {
-                            if (j < 3) {
-                                sections.add(new DonutSection(category.getName(), Color.parseColor(donutColor.get(j)), (float) category.getTotalIncome() / totalIncomes));
-                                j++;
-                            }
-                        } else {
-                            if (j < 3) {
-                                sections.add(new DonutSection(category.getName(), Color.parseColor(donutColor.get(j)), (float) 1 / 3));
-                                j++;
-                            }
-                        }
+                        totalIncomes = totalIncomes + category.getTotalIncome();
+                        sections.add(new DonutSection(category.getName(), Color.parseColor(category.getColor()), (float) category.getTotalIncome() / totalIncomes));
                     }
                     donutProgressView.setCap(1);
                     donutProgressView.submitData(sections);
@@ -112,6 +107,7 @@ public class IncomeFragment extends Fragment {
                     CategoryIncomeListAdapter adapter = new CategoryIncomeListAdapter(mCategoriesList);
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    totalIncome.setText(formatRupiah(totalIncomes));
                 }
             }
 
@@ -131,4 +127,11 @@ public class IncomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
     }
+
+    private String formatRupiah(int number){
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        return formatRupiah.format(number);
+    }
+
 }
