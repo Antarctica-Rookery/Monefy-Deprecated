@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,8 +32,10 @@ import com.malisius.monefy.category.Category;
 import com.malisius.monefy.category.CategoryListAdapter;
 import com.malisius.monefy.records.RecordDialog;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 import app.futured.donut.DonutProgressView;
 import app.futured.donut.DonutSection;
@@ -46,6 +49,7 @@ public class ExpenseFragment extends Fragment {
     private ArrayList<String> donutColor = new ArrayList<String>();
     private RecyclerView recyclerView;
     private FloatingActionButton fabButton;
+    private TextView totalExpense;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +57,8 @@ public class ExpenseFragment extends Fragment {
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_expense, container, false);
         ConstraintLayout rootParent = (ConstraintLayout) container.getParent();
+
+        totalExpense = root.findViewById(R.id.totalExpense);
 
         // Fab controller
         fabButton = rootParent.findViewById(R.id.floatingActionButton);
@@ -88,22 +94,15 @@ public class ExpenseFragment extends Fragment {
                     }
                     Collections.sort(mCategoriesList, Category.totalExpenseComparatorDesc);
                     int totalExpenses = 0;
-                    for(int i = 0; i < 3; i++){
-                        totalExpenses = totalExpenses + mCategoriesList.get(i).getTotalExpense();
-                    }
-                    int j = 0;
+                    // for top 3 expense
+//                    for(int i = 0; i < 3; i++){
+//                        totalExpenses = totalExpenses + mCategoriesList.get(i).getTotalExpense();
+//                    }
+
                     for(Category category: mCategoriesList){
-                        if(totalExpenses > 0) {
-                            if (j < 3) {
-                                sections.add(new DonutSection(category.getName(), Color.parseColor(donutColor.get(j)), (float) category.getTotalExpense() / totalExpenses));
-                                j++;
-                            }
-                        } else {
-                            if (j < 3) {
-                                sections.add(new DonutSection(category.getName(), Color.parseColor(donutColor.get(j)), (float) 1/3));
-                                j++;
-                            }
-                        }
+                        totalExpenses = totalExpenses + category.getTotalExpense();
+                        sections.add(new DonutSection(category.getName(), Color.parseColor(category.getColor()), (float) category.getTotalExpense() / totalExpenses));
+
                     }
                     donutProgressView.setCap(1);
                     donutProgressView.submitData(sections);
@@ -111,6 +110,7 @@ public class ExpenseFragment extends Fragment {
                     CategoryExpenseListAdapter adapter = new CategoryExpenseListAdapter(mCategoriesList);
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    totalExpense.setText(formatRupiah(totalExpenses));
                 }
             }
 
@@ -130,4 +130,11 @@ public class ExpenseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
     }
+
+    private String formatRupiah(int number){
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        return formatRupiah.format(number);
+    }
+
 }
