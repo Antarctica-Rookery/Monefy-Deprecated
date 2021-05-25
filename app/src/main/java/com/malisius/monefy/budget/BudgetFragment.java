@@ -43,7 +43,7 @@ public class BudgetFragment extends Fragment {
     private ArrayList<Budget> mBudgetList = new ArrayList<Budget>();
     private ArrayList<String> donutColor = new ArrayList<String>();
     private RecyclerView budgetRecycle;
-    private TextView budgetLeft, budgetTotal;
+    private TextView budgetLeft, budgetTotal, budgetTotalLeft;
     private FloatingActionButton fabButton;
 
     private String formatRupiah(int number){
@@ -58,6 +58,7 @@ public class BudgetFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_budget, container, false);
         ConstraintLayout rootParent = (ConstraintLayout) container.getParent();
+
         fabButton = rootParent.findViewById(R.id.floatingActionButton);
         fabButton.setVisibility(View.VISIBLE);
         fabButton.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +69,9 @@ public class BudgetFragment extends Fragment {
                 dialog.showAddDialog(getContext(),false, mBudgetList, null);
             }
         });
+
+        budgetTotalLeft = root.findViewById(R.id.totalLeft);
+
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance();
         budgetRecycle = root.findViewById(R.id.budget_recycle);
@@ -120,6 +124,9 @@ public class BudgetFragment extends Fragment {
                 }
                 budgetLeft.setText(formatRupiah(totalBudgetLeft));
                 budgetTotal.setText(formatRupiah(totalBudgetLimit));
+
+                budgetTotalLeft.setText(formatRupiah(totalBudgetLimit - totalBudgetLeft));
+
                 donutProgressView.setCap(1);
                 donutProgressView.submitData(sections);
                 BudgetListAdapter adapter = new BudgetListAdapter(mBudgetList);
