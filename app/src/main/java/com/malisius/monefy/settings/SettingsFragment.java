@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -33,6 +34,7 @@ public class SettingsFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;
     private FloatingActionButton fabButton;
+    private CardView cardView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +42,15 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
         ConstraintLayout rootParent = (ConstraintLayout) container.getParent();
+
+        cardView = root.findViewById(R.id.user);
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditUserDialog editUserDialog = new EditUserDialog();
+                editUserDialog.showDialog(getContext());
+            }
+        });
 
         fabButton = rootParent.findViewById(R.id.floatingActionButton);
         fabButton.setVisibility(View.GONE);
