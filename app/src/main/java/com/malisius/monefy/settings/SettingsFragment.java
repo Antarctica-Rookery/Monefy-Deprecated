@@ -73,8 +73,6 @@ public class SettingsFragment<ImageView> extends Fragment {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        Log.i("UserURL",user.getPhotoUrl().toString());
-
         Glide.with(getContext()).load(user.getPhotoUrl()).placeholder(R.drawable.ic_baseline_account_circle_24).circleCrop().into((android.widget.ImageView) imageView);
 
         fabButton = rootParent.findViewById(R.id.floatingActionButton);
