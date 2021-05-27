@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -115,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signIn(View view){
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Getting User Data..");
+        progressDialog.show();
         //Basic Sign-In
         String username = TILusername.getEditText().getText().toString();
         String password = TILpassword.getEditText().getText().toString();
@@ -143,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                                     if (task.isSuccessful()) {
+                                                        progressDialog.dismiss();
                                                         // Sign in success, update UI with the signed-in user's information
                                                         Log.d("MainActivity", "signInWithEmail:success");
                                                         FirebaseUser user = mAuth.getCurrentUser();
@@ -155,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                                                         startActivity(homeIntent);
                                                     } else {
                                                         // If sign in fails, display a message to the user.
+                                                        progressDialog.dismiss();
                                                         Log.w("MainActivity",  task.getException());
                                                         if(task.getException() instanceof FirebaseAuthInvalidCredentialsException){
                                                             TILpassword.setError("Invalid Password");

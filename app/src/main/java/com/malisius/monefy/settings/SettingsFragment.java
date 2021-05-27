@@ -1,12 +1,15 @@
 package com.malisius.monefy.settings;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,22 +17,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideModule;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.malisius.monefy.HomeActivity;
 import com.malisius.monefy.MainActivity;
 import com.malisius.monefy.R;
 import com.malisius.monefy.about_us.AboutUsActivity;
 import com.malisius.monefy.category.CategoryActivity;
 import com.malisius.monefy.records.RecordDialog;
 
-public class SettingsFragment extends Fragment {
+import java.io.ByteArrayOutputStream;
+
+public class SettingsFragment<ImageView> extends Fragment {
+    private static final int CAMERA_REQ = 1;
     LinearLayout aboutUs, categories, logout;
+    ImageView imageView;
     TextView usernameTv, emailTv;
     FirebaseAuth mAuth;
     FirebaseDatabase mDatabase;
@@ -47,10 +61,21 @@ public class SettingsFragment extends Fragment {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditUserDialog editUserDialog = new EditUserDialog();
-                editUserDialog.showDialog(getContext());
+//                EditUserDialog editUserDialog = new EditUserDialog();
+//                editUserDialog.showDialog(getContext());
+                FragmentManager fm = getChildFragmentManager();
+                EditUserDialog dialogFragment = new EditUserDialog ();
+                dialogFragment.show(fm, "Sample Fragment");
             }
         });
+
+        imageView = (ImageView) root.findViewById(R.id.user_image);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        Log.i("UserURL",user.getPhotoUrl().toString());
+
+        Glide.with(getContext()).load(user.getPhotoUrl()).placeholder(R.drawable.ic_baseline_account_circle_24).circleCrop().into((android.widget.ImageView) imageView);
 
         fabButton = rootParent.findViewById(R.id.floatingActionButton);
         fabButton.setVisibility(View.GONE);
@@ -115,4 +140,6 @@ public class SettingsFragment extends Fragment {
 
         return root;
     }
+
+
 }
