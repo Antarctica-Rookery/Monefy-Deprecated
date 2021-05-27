@@ -4,6 +4,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
+    private static final int CAMERA_REQ = 1;
     private int backPressed = 0;
 
     @Override
@@ -87,6 +89,16 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         }
         backPressed++;
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i("SettingFrasgment","Camera Openned");
+        if (requestCode == CAMERA_REQ && resultCode == RESULT_OK) {
+            Log.i("SettingFrasgment","Camera Openned");
+//            photo = (Bitmap) data.getExtras().get("data");
+//            submit();
+        }
     }
 
 }
